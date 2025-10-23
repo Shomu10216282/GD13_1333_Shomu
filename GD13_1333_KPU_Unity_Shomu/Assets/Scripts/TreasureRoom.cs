@@ -1,37 +1,37 @@
 using System;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 
 namespace GD13_1333_Shomu.Scripts
 {
     internal class TreasureRoom : Room
     {
-        public TreasureRoom() : base("Treasure Room") { }
+        private Item treasure;
+        private bool taken = false;
 
-        public override void OnRoomSearched(Player player)
+        public TreasureRoom(Item item)
         {
-            if (IsCleared)
-            {
-                Console.WriteLine("Nothing left here.");
-                return;
-            }
+            treasure = item;
+        }
 
-            Console.WriteLine("You found a treasure chest!");
-            System.Random rnd = new System.Random();
-            int reward = rnd.Next(1, 3);
+        public override char MapSymbol => 'T';
+        public override string Name => "Treasure Room";
 
-            if (reward == 1)
+        public override void Enter(Player player)
+        {
+            if (taken)
             {
-                Console.WriteLine("You found a special die!");
-                player.AddDie(); 
+                Console.WriteLine("You search the chest remnants but find nothing left.");
             }
             else
             {
-                Console.WriteLine("You found a healing potion!");
-                player.Heal(10);
+                Console.WriteLine($"You search the room and find: {treasure.Name}!");
+                player.AddItem(treasure);
+                taken = true;
+                IsCleared = true;
             }
-
-            IsCleared = true;
+            Visited = true;
         }
     }
 }

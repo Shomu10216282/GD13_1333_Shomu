@@ -9,14 +9,10 @@ namespace GD13_1333_Shomu.Scripts
 {
     internal class DieRoller
     {
-        private int sides;
         private System.Random rand = new System.Random();
+        private int sides;
 
-        public DieRoller()
-        {
-        }
-
-        public DieRoller(int sides)
+        public DieRoller(int sides = 6)
         {
             this.sides = sides;
         }

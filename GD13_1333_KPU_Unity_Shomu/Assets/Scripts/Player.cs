@@ -5,117 +5,82 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 
 namespace GD13_1333_Shomu.Scripts
 {
     internal class Player
     {
-        private string v;
-
         public string Name { get; private set; }
-        public int CurrentRoll { get; set; }
-        public int Points { get; set; }
-        public List<int> Dice { get; private set; }
-        public List<int> Rolls { get; private set; }
-        public int EvenCount { get; private set; }
-        public int OddCount { get; private set; }
         public int Health { get; private set; }
-        public int MaxHealth { get; private set; } = 50;
-        public int DiceCount { get; private set; } = 1;
+        public int MaxHealth { get; private set; }
+        public List<Item> Inventory { get; private set; }
+        public Weapon? EquippedWeapon { get; private set; }
 
-        public Player(string name, List<int> diceSet)
+        public Player(string name, int maxHealth = 20)
         {
             Name = name;
-            Points = 0;
-            Dice = new List<int>(diceSet);
-            Rolls = new List<int>();
-            EvenCount = 0;
-            OddCount = 0;
+            MaxHealth = maxHealth;
+            Health = MaxHealth;
+            Inventory = new List<Item>();
         }
 
-        public Player(string v)
+        public void Heal(int amount)
         {
-            this.v = v;
+            Health += amount;
+            if (Health > MaxHealth) Health = MaxHealth;
+            Console.WriteLine($"{Name} healed {amount} HP. (HP: {Health}/{MaxHealth})");
         }
-
-        public bool HasDice()
-        {
-            return Dice.Count > 0;
-        }
-
-        public bool UseDie(int sides)
-        {
-            if (Dice.Contains(sides))
-            {
-                Dice.Remove(sides);
-                return true;
-            }
-            return false;
-        }
-
-
-        public void RecordRoll(int value)
-        {
-            Rolls.Add(value);
-            if (value % 2 == 0) EvenCount++;
-            else OddCount++;
-        }
-
-        public int TotalRoll()
-        {
-            int sum = 0;
-            foreach (int r in Rolls) sum += r;
-            return sum;
-        }
-
-        public double AverageRoll()
-        {
-            if (Rolls.Count == 0) return 0;
-            return (double)TotalRoll() / Rolls.Count;
-        }
-
 
         public void TakeDamage(int amount)
         {
             Health -= amount;
             if (Health < 0) Health = 0;
-        }
-        public void Heal(int amount)
-        {
-            Health += amount;
-            if (Health > MaxHealth) Health = MaxHealth;
-            Console.WriteLine($"{Name} healed {amount} HP! (Now {Health}/{MaxHealth})");
-        }
-        public void AddDie()
-        {
-            DiceCount++;
-            Console.WriteLine($"{Name} gained a new die! Total dice: {DiceCount}");
+            Console.WriteLine($"{Name} took {amount} damage. (HP: {Health}/{MaxHealth})");
         }
 
-
-        internal class ComputerPlayer : Player
+        public void AddItem(Item item)
         {
-            private System.Random rand = new System.Random();
+            Inventory.Add(item);
+            Console.WriteLine($"You obtained: {item.Name} — {item.Description}");
+        }
 
-            public ComputerPlayer(string name, List<int> diceSet) : base(name, diceSet) { }
+        public void EquipWeapon(Weapon weapon)
+        {
+            EquippedWeapon = weapon;
+            Console.WriteLine($"{Name} equipped {weapon.Name}. (+{weapon.DamageBonus} damage)");
+        }
 
-            public int ChooseDie()
+        public void ShowInventory()
+        {
+            if (Inventory.Count == 0)
             {
-                List<int> dice = Dice;
-                int index = rand.Next(dice.Count);
-                int choice = dice[index];
-                UseDie(choice);
-                return choice;
+                Console.WriteLine("Inventory: (empty)");
+                return;
             }
 
-            internal void RecordRoll(int value)
+            Console.WriteLine("\nInventory:");
+            for (int i = 0; i < Inventory.Count; i++)
+                Console.WriteLine($"{i + 1}. {Inventory[i].Name} - {Inventory[i].Description}");
+        }
+
+        public bool UseItemByIndex(int displayedIndex)
+        {
+            int index = displayedIndex - 1;
+            if (index < 0 || index >= Inventory.Count)
             {
-                Rolls.Add(value);
-                if (value % 2 == 0) EvenCount++;
-                else OddCount++;
+                Console.WriteLine("Invalid item selection.");
+                return false;
             }
+
+            Item it = Inventory[index];
+            it.Use(this);
+            if (it.IsConsumable())
+            {
+                Inventory.RemoveAt(index);
+            }
+            return true;
         }
     }
 }
-

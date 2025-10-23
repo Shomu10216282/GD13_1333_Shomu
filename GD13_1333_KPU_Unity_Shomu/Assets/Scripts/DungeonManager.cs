@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 
 namespace GD13_1333_Shomu.Scripts
@@ -8,54 +8,93 @@ namespace GD13_1333_Shomu.Scripts
         private Map map;
         private Player player;
 
-        public void Start()
+        public void StartDungeon(Player player)
         {
-            Console.WriteLine("=== Welcome to Dungeon Dice Adventure ===");
-            Console.Write("Enter your name: ");
-            string name = Console.ReadLine();
+            Map map = new Map();
+            Console.WriteLine("\n=== Dungeon Exploration Begins ===");
 
-            player = new Player(name);
-            map = new Map();
-
-            Console.WriteLine($"Good luck, {player.Name}!\n");
-
-            bool playing = true;
-            while (playing)
+            while (player.Health > 0)
             {
-                Room currentRoom = map.GetCurrentRoom();
-                currentRoom.OnRoomEntered(player);
-
-                Console.WriteLine("\nCommands: [n]orth, [s]outh, [e]ast, [w]est, [search], [exit]");
-                Console.Write("> ");
-                string input = Console.ReadLine().ToLower();
-
-                switch (input)
+                map.DrawMap();
+                Room? current = map.GetCurrentRoom();
+                if (current == null)
                 {
-                    case "n":
-                    case "s":
-                    case "e":
-                    case "w":
-                        currentRoom.OnRoomExit(player);
-                        map.Move(input);
-                        break;
-                    case "search":
-                        currentRoom.OnRoomSearched(player);
-                        break;
-                    case "exit":
-                        playing = false;
-                        Console.WriteLine("You decided to leave the dungeon. Game Over.");
-                        break;
-                    default:
-                        Console.WriteLine("Invalid command.");
-                        break;
+                    Console.WriteLine("\nThere is no current room! Ending dungeon.");
+                    break;
+                }
+
+                Console.WriteLine($"\nYou are at: {current.Name} (Visited: {current.Visited}, Cleared: {current.IsCleared})");
+
+                Console.WriteLine("\nWhat do you want to do?");
+                Console.WriteLine("1. Explore the room");
+                Console.WriteLine("2. Use an item");
+                Console.WriteLine("3. Move (N/S/E/W)");
+                Console.WriteLine("4. Show inventory");
+                Console.Write("→ ");
+                string choice = (Console.ReadLine() ?? "").Trim();
+
+                if (choice == "1")
+                {
+                    current.Enter(player);
+                }
+                else if (choice == "2")
+                {
+                    if (player.Inventory.Count == 0)
+                    {
+                        Console.WriteLine("You have no items to use.");
+                    }
+                    else
+                    {
+                        player.ShowInventory();
+                        Console.Write("Enter item number to use (or Enter to cancel): ");
+                        string s = Console.ReadLine() ?? "";
+                        if (!string.IsNullOrWhiteSpace(s) && int.TryParse(s, out int itemIdx))
+                        {
+                            player.UseItemByIndex(itemIdx);
+                        }
+                        else
+                        {
+                            Console.WriteLine("No item used.");
+                        }
+                    }
+                }
+                else if (choice == "3")
+                {
+                    Console.Write("Enter direction (N/S/E/W): ");
+                    string dir = (Console.ReadLine() ?? "").Trim().ToUpper();
+                    if (map.TryMove(dir))
+                    {
+                        Console.WriteLine($"You move {dir}.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("You can't move that way.");
+                    }
+                }
+                else if (choice == "4")
+                {
+                    player.ShowInventory();
+                }
+                else
+                {
+                    Console.WriteLine("Invalid selection.");
                 }
 
                 if (player.Health <= 0)
                 {
-                    Console.WriteLine("You have fallen in battle... Game Over.");
-                    playing = false;
+                    Console.WriteLine("\nYou have fallen in the dungeon... Game Over.");
+                    break;
+                }
+
+                bool anyEnemy = map.AnyUnclearedEncounters();
+                if (!anyEnemy)
+                {
+                    Console.WriteLine("\nAll enemies have been defeated! You cleared the dungeon!");
+                    break;
                 }
             }
+
+            Console.WriteLine("\n=== Dungeon Exploration Ended ===");
         }
     }
 }

@@ -1,80 +1,107 @@
 using System;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 
 namespace GD13_1333_Shomu.Scripts
 {
     internal class Map
     {
-        int mapSize = 3;
+        private Room[,] grid;
+        public int Rows { get; private set; }
+        public int Cols { get; private set; }
 
-        private Room[,] rooms;
-        private int playerX;
-        private int playerY;
-        private System.Random rnd = new System.Random();
+        public int PlayerRow { get; private set; }
+        public int PlayerCol { get; private set; }
+
+        private System.Random rand = new System.Random();
 
         public Map()
         {
+            Rows = rand.Next(3, 6);
+            Cols = rand.Next(3, 6);
+            grid = new Room[Rows, Cols];
 
-            VisualizeMap();
+            GenerateRooms();
 
-            //rooms = new Room[3, 3];
-            //GenerateMap();
-            //playerX = 1;
-            //playerY = 1; 
+            PlayerRow = Rows / 2;
+            PlayerCol = Cols / 2;
         }
 
-        private void VisualizeMap()
+        private void GenerateRooms()
         {
-            for (int x = 0; x < mapSize; x++)
+            for (int r = 0; r < Rows; r++)
             {
-                for (int z = 0; z < mapSize; z++)
+                for (int c = 0; c < Cols; c++)
                 {
-                    var mapRoomRepresentation = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    mapRoomRepresentation.transform.position = new Vector3(x, 0, z);
+                    int p = rand.Next(100);
+                    if (p < 60) grid[r, c] = new NormalRoom();
+                    else if (p < 80) grid[r, c] = new TreasureRoom(GenerateRandomItem());
+                    else grid[r, c] = new EncounterRoom(rand.Next(8, 26));
                 }
             }
+
+            grid[Rows / 2, Cols / 2] = new NormalRoom();
         }
 
-        private void GenerateMap()
+        private Item GenerateRandomItem()
         {
-            for (int y = 0; y < 3; y++)
+            int p = rand.Next(100);
+            if (p < 50) return new Potion("Small Healing Potion", 4, 8);
+            else return new Weapon("Rusty Sword", 2);
+        }
+
+        public void DrawMap()
+        {
+            Console.WriteLine($"\nMap ({Rows} x {Cols}):");
+            for (int r = 0; r < Rows; r++)
             {
-                for (int x = 0; x < 3; x++)
+                for (int c = 0; c < Cols; c++)
                 {
-                    int r = rnd.Next(3);
-                    if (r == 0)
-                        rooms[y, x] = new NormalRoom();
-                    else if (r == 1)
-                        rooms[y, x] = new TreasureRoom();
+                    if (r == PlayerRow && c == PlayerCol)
+                    {
+                        Console.Write("[P] ");
+                    }
                     else
-                        rooms[y, x] = new EncounterRoom();
+                    {
+                        char ch = grid[r, c].MapSymbol;
+                        Console.Write($"[{ch}] ");
+                    }
                 }
+                Console.WriteLine();
             }
+            Console.WriteLine("Legend: P=You, .=Empty, T=Treasure, E=Enemy");
         }
 
-        public Room GetCurrentRoom() => rooms[playerY, playerX];
+        public Room GetCurrentRoom() => grid[PlayerRow, PlayerCol];
 
-        public void Move(string direction)
+        public bool TryMove(string dir)
         {
-            switch (direction.ToLower())
+            dir = dir.ToUpper();
+            int newR = PlayerRow;
+            int newC = PlayerCol;
+            switch (dir)
             {
-                case "n":
-                    if (playerY > 0) playerY--; else Console.WriteLine("You can't go further north.");
-                    break;
-                case "s":
-                    if (playerY < 2) playerY++; else Console.WriteLine("You can't go further south.");
-                    break;
-                case "e":
-                    if (playerX < 2) playerX++; else Console.WriteLine("You can't go further east.");
-                    break;
-                case "w":
-                    if (playerX > 0) playerX--; else Console.WriteLine("You can't go further west.");
-                    break;
-                default:
-                    Console.WriteLine("Invalid direction.");
-                    break;
+                case "N": newR = PlayerRow - 1; break;
+                case "S": newR = PlayerRow + 1; break;
+                case "E": newC = PlayerCol + 1; break;
+                case "W": newC = PlayerCol - 1; break;
+                default: return false;
             }
+            if (newR < 0 || newR >= Rows || newC < 0 || newC >= Cols)
+                return false;
+
+            PlayerRow = newR;
+            PlayerCol = newC;
+            return true;
+        }
+
+        public bool AnyUnclearedEncounters()
+        {
+            for (int r = 0; r < Rows; r++)
+                for (int c = 0; c < Cols; c++)
+                    if (grid[r, c] is EncounterRoom er && !er.IsCleared) return true;
+            return false;
         }
     }
 }
