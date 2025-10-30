@@ -8,7 +8,6 @@ namespace GD13_1333_Shomu.Scripts
     internal class GameManager : MonoBehaviour
     {
         private Player human;
-        private ComputerPlayer computer;
 
         private DieRoller dieRoller = new DieRoller();
         private System.Random random = new System.Random();

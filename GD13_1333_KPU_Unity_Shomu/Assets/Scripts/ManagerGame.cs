@@ -5,7 +5,6 @@ using static GD13_1333_Shomu.Scripts.Player;
 public class ManagerGame : MonoBehaviour
 {
     private Player human;
-    private ComputerPlayer computer;
 
     private DieRoller dieRoller = new DieRoller();
     private System.Random random = new System.Random();
