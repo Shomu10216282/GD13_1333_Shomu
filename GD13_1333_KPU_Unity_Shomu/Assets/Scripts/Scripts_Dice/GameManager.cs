@@ -12,6 +12,8 @@ namespace GD13_1333_Shomu.Scripts
         private DieRoller dieRoller = new DieRoller();
         private System.Random random = new System.Random();
 
+
+
         private Map gameMap;
         public void Start()
         {
