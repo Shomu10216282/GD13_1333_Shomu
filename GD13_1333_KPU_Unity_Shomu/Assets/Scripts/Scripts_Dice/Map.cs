@@ -16,6 +16,11 @@ namespace GD13_1333_Shomu.Scripts
 
         private System.Random rand = new System.Random();
 
+
+        int mapSize = 3;
+        public int MapSize => mapSize;
+        RoomBase[] Rooms;
+
         public Map()
         {
             Rows = rand.Next(3, 6);
@@ -103,5 +108,9 @@ namespace GD13_1333_Shomu.Scripts
                     if (grid[r, c] is EncounterRoom er && !er.IsCleared) return true;
             return false;
         }
+    }
+
+    internal class RoomBase
+    {
     }
 }

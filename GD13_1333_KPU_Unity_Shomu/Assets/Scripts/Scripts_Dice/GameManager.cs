@@ -13,6 +13,11 @@ namespace GD13_1333_Shomu.Scripts
         private System.Random random = new System.Random();
 
 
+        //Grid Manager Settings
+        [Header("Game Settings")]
+        [SerializeField] private GridSetting _gridSetting = null;
+        [Header("Environment")]
+        //
 
         private Map gameMap;
         public void Start()
