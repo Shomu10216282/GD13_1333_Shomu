@@ -12,7 +12,7 @@ public class Room : MonoBehaviour
     public Vector2Int gridPosition;
 
 
-    public enum RoomType { Base, Treasure, Encounter }
+    public enum RoomType { Base, Treasure, Combat }
     public RoomType roomType = RoomType.Base;
 
     private void OnDrawGizmos()
@@ -26,4 +26,35 @@ public class Room : MonoBehaviour
         if (east) Gizmos.DrawLine(pos, east.transform.position);
         if (west) Gizmos.DrawLine(pos, west.transform.position);
     }
+
+
+    //Assignment 3
+    public string roomName = "Base Room";
+
+    protected virtual void Start()
+    {
+        Debug.Log(roomName + " initialized.");
+    }
+
+    protected virtual void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("Player entered " + roomName);
+            OnPlayerEnter();
+        }
+    }
+
+    protected virtual void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("Player exited " + roomName);
+            OnPlayerExit();
+        }
+    }
+
+    protected virtual void OnPlayerEnter() { }
+    protected virtual void OnPlayerExit() { }
+
 }

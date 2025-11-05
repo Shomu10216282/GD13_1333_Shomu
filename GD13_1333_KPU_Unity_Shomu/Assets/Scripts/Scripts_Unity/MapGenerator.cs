@@ -6,6 +6,7 @@ public class MapGenerator : MonoBehaviour
     [Header("Room Prefabs")]
     public GameObject baseRoomPrefab;
     public GameObject treasureRoomPrefab;
+    public GameObject combatRoomPrefab;
 
     [Header("Map Settings")]
     public int mapWidth = 3;
