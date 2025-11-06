@@ -3395,6 +3395,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3829922211244742002}
   - component: {fileID: 2644633100885033086}
+  - component: {fileID: 321145561831152813}
   m_Layer: 0
   m_Name: Empty_Room
   m_TagString: Untagged
@@ -3439,6 +3440,24 @@ MonoBehaviour:
   SouthDoorway: {fileID: 6938413669774934213}
   EastDoorway: {fileID: 8772228275670589851}
   WestDoorway: {fileID: 3853662791886550646}
+--- !u!114 &321145561831152813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9018993631653800410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f94b4523fc523f4c8e847f1fa3a8e70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  north: {fileID: 0}
+  south: {fileID: 0}
+  east: {fileID: 0}
+  west: {fileID: 0}
+  gridPosition: {x: 0, y: 0}
+  roomType: 0
 --- !u!1 &9038917287546934121
 GameObject:
   m_ObjectHideFlags: 0
