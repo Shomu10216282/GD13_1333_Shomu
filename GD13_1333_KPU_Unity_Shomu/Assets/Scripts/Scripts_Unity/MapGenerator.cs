@@ -11,7 +11,7 @@ public class MapGenerator : MonoBehaviour
     [Header("Map Settings")]
     public int mapWidth = 3;
     public int mapHeight = 3;
-    public float roomSpacing = 10f;
+    public float roomSpacing = 11f;
 
     private Room[,] rooms;
 

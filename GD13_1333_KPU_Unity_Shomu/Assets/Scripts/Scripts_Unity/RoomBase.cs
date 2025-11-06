@@ -1,3 +1,4 @@
+using System;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
@@ -20,5 +21,10 @@ public class RoomBase : MonoBehaviour
         SouthDoorway.SetActive(_south == null);
         _west = roomWest;
         WestDoorway.SetActive(_west == null);
+    }
+
+    internal void OnRoomSearched()
+    {
+        throw new NotImplementedException();
     }
 }
