@@ -20,6 +20,9 @@ namespace GD13_1333_Shomu.Scripts
         //
 
         private Map gameMap;
+
+        public static object Instance { get; internal set; }
+
         public void Start()
         {
             Debug.Log("GameManager Start");
