@@ -28,10 +28,18 @@ public class MapGenerator : MonoBehaviour
         {
             for (int y = 0; y < mapHeight; y++)
             {
+                float rand = Random.value;
+                GameObject prefab;
 
-                GameObject prefab = (Random.value > 0.8f) ? treasureRoomPrefab : baseRoomPrefab;
+                if (rand > 0.85f)
+                    prefab = treasureRoomPrefab;  
+                else if (rand > 0.45f)
+                    prefab = combatRoomPrefab;    
+                else
+                    prefab = baseRoomPrefab;     
+
+
                 Vector3 position = new Vector3(x * roomSpacing, 0, y * roomSpacing);
-
                 GameObject roomObj = Instantiate(prefab, position, Quaternion.identity, transform);
                 Room room = roomObj.GetComponent<Room>();
                 room.gridPosition = new Vector2Int(x, y);
@@ -39,6 +47,10 @@ public class MapGenerator : MonoBehaviour
 
                 if (prefab == treasureRoomPrefab)
                     room.roomType = Room.RoomType.Treasure;
+                else if (prefab == combatRoomPrefab)
+                    room.roomType = Room.RoomType.Combat;
+                else
+                    room.roomType = Room.RoomType.Base;
 
                 rooms[x, y] = room;
             }
