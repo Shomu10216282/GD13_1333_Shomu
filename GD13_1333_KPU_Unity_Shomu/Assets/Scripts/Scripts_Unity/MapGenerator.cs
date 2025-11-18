@@ -15,12 +15,7 @@ public class MapGenerator : MonoBehaviour
 
     private Room[,] rooms;
 
-    void Start()
-    {
-        GenerateMap();
-    }
-
-    void GenerateMap()
+    public void GenerateMap()
     {
         rooms = new Room[mapWidth, mapHeight];
 

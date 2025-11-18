@@ -9,13 +9,18 @@ public class ManagerGame : MonoBehaviour
     private DieRoller dieRoller = new DieRoller();
     private System.Random random = new System.Random();
 
-    private Map gameMap;
+
+    //This the prehab
+    [SerializeField] private MapGenerator MapGenerator;
+
+    //Instense of Map
+    private MapGenerator gameMap;
     public void Start()
     {
         Debug.Log("GameManager Start");
-        gameMap = new Map();
+        gameMap = Instantiate(MapGenerator);
         Debug.Log("GameManager Map Created");
-
+        gameMap.GenerateMap();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

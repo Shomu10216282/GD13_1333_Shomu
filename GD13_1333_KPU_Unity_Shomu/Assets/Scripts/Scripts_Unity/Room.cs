@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Room : MonoBehaviour
@@ -57,4 +58,8 @@ public class Room : MonoBehaviour
     protected virtual void OnPlayerEnter() { }
     protected virtual void OnPlayerExit() { }
 
+    internal void TriggerPlayerEnter()
+    {
+        throw new NotImplementedException();
+    }
 }
