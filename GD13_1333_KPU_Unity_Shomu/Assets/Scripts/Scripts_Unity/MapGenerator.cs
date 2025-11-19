@@ -16,22 +16,10 @@ public class MapGenerator : MonoBehaviour
 
     private Room[,] rooms;
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    void Start()
-    {
-        GenerateMap();
-    }
-
-    void GenerateMap()
-=======
-=======
->>>>>>> Stashed changes
     public List<Room> generatedRooms = new List<Room>();
     public GameObject playerPrefab;
 
     public void GenerateMap()
->>>>>>> Stashed changes
     {
         rooms = new Room[mapWidth, mapHeight];
 
