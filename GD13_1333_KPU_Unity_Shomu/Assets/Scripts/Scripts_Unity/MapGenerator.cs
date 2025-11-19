@@ -1,4 +1,5 @@
 using GD13_1333_Shomu.Scripts;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
@@ -15,12 +16,19 @@ public class MapGenerator : MonoBehaviour
 
     private Room[,] rooms;
 
+<<<<<<< Updated upstream
     void Start()
     {
         GenerateMap();
     }
 
     void GenerateMap()
+=======
+    public List<Room> generatedRooms = new List<Room>();
+    public GameObject playerPrefab;
+
+    public void GenerateMap()
+>>>>>>> Stashed changes
     {
         rooms = new Room[mapWidth, mapHeight];
 
@@ -32,18 +40,17 @@ public class MapGenerator : MonoBehaviour
                 GameObject prefab;
 
                 if (rand > 0.85f)
-                    prefab = treasureRoomPrefab;  
+                    prefab = treasureRoomPrefab;
                 else if (rand > 0.45f)
-                    prefab = combatRoomPrefab;    
+                    prefab = combatRoomPrefab;
                 else
-                    prefab = baseRoomPrefab;     
-
+                    prefab = baseRoomPrefab;
 
                 Vector3 position = new Vector3(x * roomSpacing, 0, y * roomSpacing);
                 GameObject roomObj = Instantiate(prefab, position, Quaternion.identity, transform);
+
                 Room room = roomObj.GetComponent<Room>();
                 room.gridPosition = new Vector2Int(x, y);
-
 
                 if (prefab == treasureRoomPrefab)
                     room.roomType = Room.RoomType.Treasure;
@@ -53,9 +60,10 @@ public class MapGenerator : MonoBehaviour
                     room.roomType = Room.RoomType.Base;
 
                 rooms[x, y] = room;
+
+                generatedRooms.Add(room);
             }
         }
-
 
         for (int x = 0; x < mapWidth; x++)
         {
@@ -70,5 +78,29 @@ public class MapGenerator : MonoBehaviour
                 if (x > 0) room.west = rooms[x - 1, y];
             }
         }
+    }
+
+    public void SpawnPlayer()
+    {
+        if (generatedRooms.Count == 0)
+        {
+            Debug.LogError("No rooms generated! Can't spawn player.");
+            return;
+        }
+
+        Room startRoom = generatedRooms[Random.Range(0, generatedRooms.Count)];
+
+        Vector3 spawnPos = startRoom.transform.position;
+        spawnPos.y = 1f;
+
+        Instantiate(playerPrefab, spawnPos, Quaternion.identity);
+
+        Debug.Log("Player spawned at: " + startRoom.gridPosition);
+    }
+
+    private void Start()
+    {
+        GenerateMap();
+        SpawnPlayer();
     }
 }
