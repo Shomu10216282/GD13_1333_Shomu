@@ -1,29 +1,36 @@
-using GD13_1333_Shomu.Scripts;
-using UnityEngine;
-using static GD13_1333_Shomu.Scripts.Player;
+﻿using UnityEngine;
 
 public class ManagerGame : MonoBehaviour
 {
-    private Player human;
+    [Header("References")]
+    public MapGenerator mapGenerator;
+    public GameObject playerPrefab;
 
-    private DieRoller dieRoller = new DieRoller();
-    private System.Random random = new System.Random();
-
-    private Map gameMap;
-    public void Start()
+    private void Start()
     {
-        Debug.Log("GameManager Start");
-        gameMap = new Map();
-        Debug.Log("GameManager Map Created");
+        mapGenerator.GenerateMap();
 
+        Room randomRoom = mapGenerator.generatedRooms[
+            Random.Range(0, mapGenerator.generatedRooms.Count)];
+
+        SpawnPlayer(randomRoom);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
-
-    // Update is called once per frame
-    void Update()
+    private void SpawnPlayer(Room room)
     {
-        
+        Vector3 start = room.transform.position + Vector3.up * 10f;
+
+        Vector3 spawnPos = start;
+
+        if (Physics.Raycast(start, Vector3.down, out RaycastHit hit, 50f))
+        {
+            spawnPos = hit.point + Vector3.up * 1f; 
+        }
+        else
+        {
+            Debug.LogWarning("Player spawn raycast did not hit ground.");
+        }
+
+        Instantiate(playerPrefab, spawnPos, Quaternion.identity);
     }
 }

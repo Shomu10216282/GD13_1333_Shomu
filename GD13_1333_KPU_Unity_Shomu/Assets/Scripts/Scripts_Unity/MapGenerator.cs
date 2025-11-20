@@ -1,4 +1,3 @@
-using GD13_1333_Shomu.Scripts;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,13 +13,13 @@ public class MapGenerator : MonoBehaviour
     public int mapHeight = 3;
     public float roomSpacing = 10f;
 
-    private Room[,] rooms;
-
     public List<Room> generatedRooms = new List<Room>();
-    public GameObject playerPrefab;
+
+    private Room[,] rooms;
 
     public void GenerateMap()
     {
+        generatedRooms.Clear();
         rooms = new Room[mapWidth, mapHeight];
 
         for (int x = 0; x < mapWidth; x++)
@@ -43,15 +42,7 @@ public class MapGenerator : MonoBehaviour
                 Room room = roomObj.GetComponent<Room>();
                 room.gridPosition = new Vector2Int(x, y);
 
-                if (prefab == treasureRoomPrefab)
-                    room.roomType = Room.RoomType.Treasure;
-                else if (prefab == combatRoomPrefab)
-                    room.roomType = Room.RoomType.Combat;
-                else
-                    room.roomType = Room.RoomType.Base;
-
                 rooms[x, y] = room;
-
                 generatedRooms.Add(room);
             }
         }
@@ -69,29 +60,5 @@ public class MapGenerator : MonoBehaviour
                 if (x > 0) room.west = rooms[x - 1, y];
             }
         }
-    }
-
-    public void SpawnPlayer()
-    {
-        if (generatedRooms.Count == 0)
-        {
-            Debug.LogError("No rooms generated! Can't spawn player.");
-            return;
-        }
-
-        Room startRoom = generatedRooms[Random.Range(0, generatedRooms.Count)];
-
-        Vector3 spawnPos = startRoom.transform.position;
-        spawnPos.y = 1f;
-
-        Instantiate(playerPrefab, spawnPos, Quaternion.identity);
-
-        Debug.Log("Player spawned at: " + startRoom.gridPosition);
-    }
-
-    private void Start()
-    {
-        GenerateMap();
-        SpawnPlayer();
     }
 }

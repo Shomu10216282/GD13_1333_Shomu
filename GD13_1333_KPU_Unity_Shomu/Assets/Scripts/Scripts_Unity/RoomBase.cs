@@ -9,6 +9,11 @@ public class RoomBase : MonoBehaviour
     private RoomBase _north;
     private RoomBase _south;
     private RoomBase _west;
+    public Door northDoor;
+    public Door southDoor;
+    public Door eastDoor;
+    public Door westDoor;
+
 
     public void SetRooms(RoomBase roomNorth, RoomBase roomEast, RoomBase roomSouth, RoomBase roomWest)
     {

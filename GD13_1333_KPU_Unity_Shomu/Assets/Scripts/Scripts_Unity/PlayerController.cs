@@ -1,5 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
@@ -7,27 +8,25 @@ public class PlayerController : MonoBehaviour
     public float mouseSensitivity = 2f;
 
     private float cameraPitch = 0f;
-
     private Room currentRoom;
 
     [SerializeField] private Camera playerCamera;
+    private CharacterController controller;
 
     private void Start()
     {
+        controller = GetComponent<CharacterController>();
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        Vector3 pos = transform.position;
-        pos.y = 1f;
-        transform.position = pos;
-
         if (playerCamera == null)
         {
-            playerCamera = Camera.main;
+            playerCamera = GetComponentInChildren<Camera>();
         }
     }
 
-    void Update()
+    private void Update()
     {
         HandleMovement();
         HandleLook();
@@ -36,12 +35,11 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovement()
     {
-        float x = Input.GetAxis("Horizontal");  
-        float z = Input.GetAxis("Vertical");    
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
 
-        Vector3 moveDir = transform.right * x + transform.forward * z;
-
-        transform.position += moveDir * moveSpeed * Time.deltaTime;
+        Vector3 move = transform.right * x + transform.forward * z;
+        controller.Move(move * moveSpeed * Time.deltaTime);
     }
 
     private void HandleLook()
@@ -53,7 +51,6 @@ public class PlayerController : MonoBehaviour
 
         cameraPitch -= mouseY;
         cameraPitch = Mathf.Clamp(cameraPitch, -45f, 70f);
-
         playerCamera.transform.localEulerAngles = new Vector3(cameraPitch, 0f, 0f);
     }
 
@@ -72,7 +69,14 @@ public class PlayerController : MonoBehaviour
         if (room != null)
         {
             currentRoom = room;
-            Debug.Log("Entered " + room.roomName);
+
+            Vector3 center = room.transform.position;
+            center.y = transform.position.y; 
+            controller.enabled = false;     
+            transform.position = center;
+            controller.enabled = true;
+
+            Debug.Log("Entered room → snapped to center: " + room.roomName);
         }
     }
 

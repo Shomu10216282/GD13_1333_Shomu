@@ -589,6 +589,7 @@ GameObject:
   - component: {fileID: 750665981369204171}
   - component: {fileID: 2175160987463907184}
   - component: {fileID: 2166388203643235835}
+  - component: {fileID: 6011606646684159606}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -686,6 +687,27 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &6011606646684159606
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1888978370942492000}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10, y: 2.220446e-16, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1943120059317533019
 GameObject:
   m_ObjectHideFlags: 0
@@ -3456,6 +3478,10 @@ MonoBehaviour:
   south: {fileID: 321145561831152813}
   east: {fileID: 321145561831152813}
   west: {fileID: 321145561831152813}
+  northDoor: {fileID: 0}
+  southDoor: {fileID: 0}
+  eastDoor: {fileID: 0}
+  westDoor: {fileID: 0}
   gridPosition: {x: 0, y: 0}
   roomType: 0
   roomName: Base Room
