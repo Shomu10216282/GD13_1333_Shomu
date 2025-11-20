@@ -689,8 +689,11 @@ MonoBehaviour:
   east: {fileID: 2829765621304002824}
   west: {fileID: 2829765621304002824}
   gridPosition: {x: 0, y: 0}
-  roomType: 2
   roomName: Combat Room
+  directionArrow: {fileID: 0}
+  door: {fileID: 0}
+  enemyPrefab: {fileID: 4495143806708020535, guid: c8d059af8147241498196aa1dbc0d83f, type: 3}
+  spawnPoints: []
 --- !u!1 &2615864271454245084
 GameObject:
   m_ObjectHideFlags: 0

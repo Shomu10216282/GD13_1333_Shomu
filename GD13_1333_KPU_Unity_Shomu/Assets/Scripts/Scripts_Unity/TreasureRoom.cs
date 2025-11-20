@@ -1,16 +1,31 @@
-using GD13_1333_Shomu.Scripts;
 using UnityEngine;
 
 public class TreasureRoom : Room
 {
+    public GameObject treasureObject;
+    private bool taken = false;
+
     protected override void Start()
     {
         roomName = "Treasure Room";
         base.Start();
     }
 
-    protected override void OnPlayerEnter()
+    public override void TriggerPlayerInteract()
     {
-        Debug.Log("You found treasure! (Placeholder event)");
+        base.TriggerPlayerInteract(); 
+
+        if (!taken)
+        {
+            taken = true;
+            if (treasureObject != null)
+                treasureObject.SetActive(false);
+
+            Debug.Log("Treasure obtained!");
+        }
+        else
+        {
+            Debug.Log("Treasure already taken.");
+        }
     }
 }

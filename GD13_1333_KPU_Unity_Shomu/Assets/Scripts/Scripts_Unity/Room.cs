@@ -11,14 +11,19 @@ public class Room : MonoBehaviour
 
     [Header("Room Info")]
     public Vector2Int gridPosition;
+    public string roomName = "Base Room";
 
+    public GameObject directionArrow;
 
-    public enum RoomType { Base, Treasure, Combat }
-    public RoomType roomType = RoomType.Base;
+    protected bool playerInside = false;
+
+    protected virtual void Start()
+    {
+        Debug.Log(roomName + " initialized.");
+    }
 
     private void OnDrawGizmos()
     {
-
         Gizmos.color = Color.yellow;
         Vector3 pos = transform.position;
 
@@ -28,19 +33,11 @@ public class Room : MonoBehaviour
         if (west) Gizmos.DrawLine(pos, west.transform.position);
     }
 
-
-    //Assignment 3
-    public string roomName = "Base Room";
-
-    protected virtual void Start()
-    {
-        Debug.Log(roomName + " initialized.");
-    }
-
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            playerInside = true;
             Debug.Log("Player entered " + roomName);
             OnPlayerEnter();
         }
@@ -50,9 +47,42 @@ public class Room : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            playerInside = false;
             Debug.Log("Player exited " + roomName);
             OnPlayerExit();
         }
+    }
+
+    public virtual void TriggerPlayerInteract()
+    {
+        ShowDirectionGuide();
+    }
+
+    protected void ShowDirectionGuide()
+    {
+        Room next = north ?? east ?? south ?? west;
+
+        if (next == null)
+        {
+            Debug.Log("No exit room found.");
+            return;
+        }
+
+        if (directionArrow != null)
+        {
+            directionArrow.transform.LookAt(next.transform.position);
+            directionArrow.SetActive(true);
+
+            Invoke(nameof(HideArrow), 3f);
+        }
+
+        Debug.Log("Next room: " + next.roomName);
+    }
+
+    private void HideArrow()
+    {
+        if (directionArrow != null)
+            directionArrow.SetActive(false);
     }
 
     protected virtual void OnPlayerEnter() { }

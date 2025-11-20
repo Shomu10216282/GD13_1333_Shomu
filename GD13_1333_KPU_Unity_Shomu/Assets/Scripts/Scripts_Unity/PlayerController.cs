@@ -17,9 +17,7 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
 
         if (playerCamera == null)
-        {
             playerCamera = GetComponentInChildren<Camera>();
-        }
     }
 
     void Update()
@@ -53,10 +51,9 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInteraction()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && currentRoom != null)
+        if (Input.GetKeyDown(KeyCode.F) && currentRoom != null)
         {
-            Debug.Log("Player searching room...");
-            currentRoom.TriggerPlayerEnter();
+            currentRoom.TriggerPlayerInteract();
         }
     }
 
@@ -64,19 +61,13 @@ public class PlayerController : MonoBehaviour
     {
         Room room = other.GetComponent<Room>();
         if (room != null)
-        {
             currentRoom = room;
-            Debug.Log("Entered " + room.roomName);
-        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         Room room = other.GetComponent<Room>();
         if (room != null && room == currentRoom)
-        {
             currentRoom = null;
-            Debug.Log("Exited " + room.roomName);
-        }
     }
 }
