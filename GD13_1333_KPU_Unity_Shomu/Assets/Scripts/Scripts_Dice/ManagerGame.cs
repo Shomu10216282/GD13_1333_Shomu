@@ -18,18 +18,15 @@ public class ManagerGame : MonoBehaviour
 
     private void SpawnPlayer(Room room)
     {
-        Vector3 start = room.transform.position + Vector3.up * 10f;
-
-        Vector3 spawnPos = start;
-
-        if (Physics.Raycast(start, Vector3.down, out RaycastHit hit, 50f))
+        Collider floorCollider = room.GetComponentInChildren<Collider>();
+        float floorY = room.transform.position.y;
+        if (floorCollider != null)
         {
-            spawnPos = hit.point + Vector3.up * 1f; 
+            floorY = floorCollider.bounds.max.y;
         }
-        else
-        {
-            Debug.LogWarning("Player spawn raycast did not hit ground.");
-        }
+
+        float playerHeightOffset = 1f; 
+        Vector3 spawnPos = new Vector3(room.transform.position.x, floorY + playerHeightOffset, room.transform.position.z);
 
         Instantiate(playerPrefab, spawnPos, Quaternion.identity);
     }
