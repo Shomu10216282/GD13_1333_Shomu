@@ -693,7 +693,8 @@ MonoBehaviour:
   directionArrow: {fileID: 0}
   door: {fileID: 0}
   enemyPrefab: {fileID: 4495143806708020535, guid: c8d059af8147241498196aa1dbc0d83f, type: 3}
-  spawnPoints: []
+  spawnPoints:
+  - {fileID: 2970011351674727834, guid: c8d059af8147241498196aa1dbc0d83f, type: 3}
 --- !u!1 &2615864271454245084
 GameObject:
   m_ObjectHideFlags: 0
@@ -2366,7 +2367,7 @@ GameObject:
   - component: {fileID: 1367338981841745950}
   m_Layer: 0
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

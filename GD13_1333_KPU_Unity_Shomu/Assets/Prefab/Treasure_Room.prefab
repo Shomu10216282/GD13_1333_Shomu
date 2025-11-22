@@ -652,8 +652,9 @@ MonoBehaviour:
   east: {fileID: 4123126783671965852}
   west: {fileID: 4123126783671965852}
   gridPosition: {x: 0, y: 0}
-  roomType: 1
   roomName: Treasure Room
+  directionArrow: {fileID: 0}
+  treasureObject: {fileID: 0}
 --- !u!1 &2344605458012089785
 GameObject:
   m_ObjectHideFlags: 0
@@ -885,7 +886,7 @@ GameObject:
   - component: {fileID: 75871405955256114}
   m_Layer: 0
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

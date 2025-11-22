@@ -592,7 +592,7 @@ GameObject:
   - component: {fileID: 6011606646684159606}
   m_Layer: 0
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3483,8 +3483,8 @@ MonoBehaviour:
   east: {fileID: 321145561831152813}
   west: {fileID: 321145561831152813}
   gridPosition: {x: 0, y: 0}
-  roomType: 0
   roomName: Base Room
+  directionArrow: {fileID: 0}
 --- !u!1 &9038917287546934121
 GameObject:
   m_ObjectHideFlags: 0

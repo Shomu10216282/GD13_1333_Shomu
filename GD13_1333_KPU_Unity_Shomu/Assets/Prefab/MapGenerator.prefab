@@ -51,7 +51,28 @@ MonoBehaviour:
   mapHeight: 10
   roomSpacing: 11
   generatedRooms:
-  - {fileID: 321145561831152813, guid: e66ea2fbb41b6a64db2c3d3a10d8d048, type: 3}
-  - {fileID: 4123126783671965852, guid: 47e5abcb0966392489984d2744b8991b, type: 3}
-  - {fileID: 2829765621304002824, guid: 31ad09f71ff39e54f8d7b027098fa930, type: 3}
-  playerPrefab: {fileID: 4594238569501102276, guid: ce27753815d26b941a9694e31f03f274, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

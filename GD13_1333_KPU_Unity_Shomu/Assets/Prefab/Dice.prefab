@@ -1368,7 +1368,7 @@ GameObject:
   - component: {fileID: 3609678937240196542}
   - component: {fileID: 1714157742856950184}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Dice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

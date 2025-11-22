@@ -24,7 +24,11 @@ public class PlayerController : MonoBehaviour
     {
         HandleMovement();
         HandleLook();
-        HandleInteraction();
+
+        if (Input.GetKeyDown(KeyCode.F) && currentRoom != null)
+        {
+            currentRoom.TriggerPlayerInteract();
+        }
     }
 
     private void HandleMovement()
@@ -47,14 +51,6 @@ public class PlayerController : MonoBehaviour
         cameraPitch = Mathf.Clamp(cameraPitch, -45f, 70f);
 
         playerCamera.transform.localEulerAngles = new Vector3(cameraPitch, 0f, 0f);
-    }
-
-    private void HandleInteraction()
-    {
-        if (Input.GetKeyDown(KeyCode.F) && currentRoom != null)
-        {
-            currentRoom.TriggerPlayerInteract();
-        }
     }
 
     private void OnTriggerEnter(Collider other)

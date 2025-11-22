@@ -18,15 +18,19 @@ public class ManagerGame : MonoBehaviour
 
     private void SpawnPlayer(Room room)
     {
-        Collider floorCollider = room.GetComponentInChildren<Collider>();
         float floorY = room.transform.position.y;
-        if (floorCollider != null)
+
+        Collider[] cols = room.GetComponentsInChildren<Collider>();
+        foreach (Collider col in cols)
         {
-            floorY = floorCollider.bounds.max.y;
+            floorY = Mathf.Max(floorY, col.bounds.max.y);
         }
 
-        float playerHeightOffset = 1f; 
-        Vector3 spawnPos = new Vector3(room.transform.position.x, floorY + playerHeightOffset, room.transform.position.z);
+        Vector3 spawnPos = new Vector3(
+            room.transform.position.x,
+            floorY + 1f,
+            room.transform.position.z
+        );
 
         Instantiate(playerPrefab, spawnPos, Quaternion.identity);
     }

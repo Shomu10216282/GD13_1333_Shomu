@@ -1,5 +1,4 @@
-using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Room : MonoBehaviour
 {
@@ -13,14 +12,19 @@ public class Room : MonoBehaviour
     public Vector2Int gridPosition;
     public string roomName = "Base Room";
 
+    [Header("Direction Arrow")]
     public GameObject directionArrow;
 
     protected bool playerInside = false;
 
+
     protected virtual void Start()
     {
         Debug.Log(roomName + " initialized.");
+        if (directionArrow != null)
+            directionArrow.SetActive(false);
     }
+
 
     private void OnDrawGizmos()
     {
@@ -38,7 +42,6 @@ public class Room : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInside = true;
-            Debug.Log("Player entered " + roomName);
             OnPlayerEnter();
         }
     }
@@ -48,23 +51,25 @@ public class Room : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInside = false;
-            Debug.Log("Player exited " + roomName);
+            HideArrow();
             OnPlayerExit();
         }
     }
+
 
     public virtual void TriggerPlayerInteract()
     {
         ShowDirectionGuide();
     }
 
+
     protected void ShowDirectionGuide()
     {
-        Room next = north ?? east ?? south ?? west;
+        Room next = GetNextRoom();
 
         if (next == null)
         {
-            Debug.Log("No exit room found.");
+            Debug.Log("進める方向はありません。");
             return;
         }
 
@@ -72,24 +77,30 @@ public class Room : MonoBehaviour
         {
             directionArrow.transform.LookAt(next.transform.position);
             directionArrow.SetActive(true);
-
             Invoke(nameof(HideArrow), 3f);
         }
 
-        Debug.Log("Next room: " + next.roomName);
+        Debug.Log("次の部屋: " + next.roomName);
     }
 
-    private void HideArrow()
+    protected void HideArrow()
     {
         if (directionArrow != null)
             directionArrow.SetActive(false);
     }
 
+
+    public Room GetNextRoom()
+    {
+        if (north != null) return north;
+        if (east != null) return east;
+        if (south != null) return south;
+        if (west != null) return west;
+
+        return null;
+    }
+
+
     protected virtual void OnPlayerEnter() { }
     protected virtual void OnPlayerExit() { }
-
-    internal void TriggerPlayerEnter()
-    {
-        throw new NotImplementedException();
-    }
 }
