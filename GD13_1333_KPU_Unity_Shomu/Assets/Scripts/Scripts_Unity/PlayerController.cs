@@ -2,28 +2,52 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    public float moveSpeed = 4f;
+    public float mouseSensitivity = 2f;
 
-    private void Start()
+    private Rigidbody rb;
+    private Camera playerCamera;
+    private float cameraPitch = 0f;
+
+    void Start()
     {
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
 
-        Vector3 pos = transform.position;
-        pos.y = 1f;
-        transform.position = pos;
+        playerCamera = GetComponentInChildren<Camera>();
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void Update()
     {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        HandleLook();
+    }
 
-        Vector3 move = new Vector3(x, 0, z);
-        transform.Translate(move * moveSpeed * Time.deltaTime, Space.World);
+    void FixedUpdate()
+    {
+        HandleMovement();
+    }
 
+    private void HandleMovement()
+    {
+        float x = Input.GetAxis("Horizontal"); // A/D
+        float z = Input.GetAxis("Vertical");   // W/S
 
-        if (move != Vector3.zero)
-        {
-            transform.forward = move;
-        }
+        Vector3 move = (transform.right * x + transform.forward * z).normalized;
+        rb.MovePosition(rb.position + move * moveSpeed * Time.fixedDeltaTime);
+    }
+
+    private void HandleLook()
+    {
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+
+        transform.Rotate(Vector3.up * mouseX);
+
+        cameraPitch -= mouseY;
+        cameraPitch = Mathf.Clamp(cameraPitch, -45f, 70f);
+        playerCamera.transform.localEulerAngles = new Vector3(cameraPitch, 0f, 0f);
     }
 }

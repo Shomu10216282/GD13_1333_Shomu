@@ -1,29 +1,56 @@
-using GD13_1333_Shomu.Scripts;
 using UnityEngine;
-using static GD13_1333_Shomu.Scripts.Player;
 
 public class ManagerGame : MonoBehaviour
 {
-    private Player human;
+    [Header("References")]
+    public MapGenerator mapGenerator;
+    public GameObject playerPrefab;
 
-    private DieRoller dieRoller = new DieRoller();
-    private System.Random random = new System.Random();
-
-    private Map gameMap;
-    public void Start()
+    private void Start()
     {
-        Debug.Log("GameManager Start");
-        gameMap = new Map();
-        Debug.Log("GameManager Map Created");
+        mapGenerator.GenerateMap();
 
+        if (mapGenerator.generatedRooms == null || mapGenerator.generatedRooms.Count == 0)
+        {
+            Debug.LogError("No rooms generated! Check MapGenerator settings.");
+            return;
+        }
+
+        Room randomRoom = mapGenerator.generatedRooms[
+            Random.Range(0, mapGenerator.generatedRooms.Count)];
+
+        SpawnPlayer(randomRoom);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
-
-    // Update is called once per frame
-    void Update()
+    private void SpawnPlayer(Room room)
     {
-        
+        if (room == null)
+        {
+            Debug.LogError("SpawnPlayer received a null room!");
+            return;
+        }
+
+        float floorY = room.transform.position.y;
+        Collider[] cols = room.GetComponentsInChildren<Collider>();
+        foreach (Collider col in cols)
+        {
+            if (col.bounds.max.y > floorY)
+                floorY = col.bounds.max.y;
+        }
+
+        Vector3 spawnPos = new Vector3(
+            room.transform.position.x,
+            floorY + 1f, 
+            room.transform.position.z
+        );
+
+        GameObject playerObj = Instantiate(playerPrefab, spawnPos, Quaternion.identity);
+
+        Rigidbody rb = playerObj.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
     }
 }

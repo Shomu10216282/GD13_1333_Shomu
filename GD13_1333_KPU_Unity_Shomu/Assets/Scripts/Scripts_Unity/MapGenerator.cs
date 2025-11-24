@@ -1,4 +1,4 @@
-using GD13_1333_Shomu.Scripts;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
@@ -13,15 +13,13 @@ public class MapGenerator : MonoBehaviour
     public int mapHeight = 3;
     public float roomSpacing = 10f;
 
+    public List<Room> generatedRooms = new List<Room>();
+
     private Room[,] rooms;
 
-    void Start()
+    public void GenerateMap()
     {
-        GenerateMap();
-    }
-
-    void GenerateMap()
-    {
+        generatedRooms.Clear();
         rooms = new Room[mapWidth, mapHeight];
 
         for (int x = 0; x < mapWidth; x++)
@@ -32,30 +30,39 @@ public class MapGenerator : MonoBehaviour
                 GameObject prefab;
 
                 if (rand > 0.85f)
-                    prefab = treasureRoomPrefab;  
+                    prefab = treasureRoomPrefab;
                 else if (rand > 0.45f)
-                    prefab = combatRoomPrefab;    
+                    prefab = combatRoomPrefab;
                 else
-                    prefab = baseRoomPrefab;     
-
+                    prefab = baseRoomPrefab;
 
                 Vector3 position = new Vector3(x * roomSpacing, 0, y * roomSpacing);
                 GameObject roomObj = Instantiate(prefab, position, Quaternion.identity, transform);
-                Room room = roomObj.GetComponent<Room>();
-                room.gridPosition = new Vector2Int(x, y);
 
+                Room room = roomObj.GetComponent<Room>();
 
                 if (prefab == treasureRoomPrefab)
-                    room.roomType = Room.RoomType.Treasure;
+                {
+                    room.roomType = RoomType.Treasure;
+                    room.roomName = "Treasure Room";
+                }
                 else if (prefab == combatRoomPrefab)
-                    room.roomType = Room.RoomType.Combat;
+                {
+                    room.roomType = RoomType.Combat;
+                    room.roomName = "Combat Room";
+                }
                 else
-                    room.roomType = Room.RoomType.Base;
+                {
+                    room.roomType = RoomType.Base;
+                    room.roomName = "Base Room";
+                }
+
+                room.gridPosition = new Vector2Int(x, y);
 
                 rooms[x, y] = room;
+                generatedRooms.Add(room);
             }
         }
-
 
         for (int x = 0; x < mapWidth; x++)
         {
