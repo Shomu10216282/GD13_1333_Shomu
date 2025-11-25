@@ -44,11 +44,7 @@ public class ManagerGame : MonoBehaviour
                 floorY = col.bounds.max.y;
         }
 
-        Vector3 spawnPos = new Vector3(
-            room.transform.position.x,
-            floorY + 1f,
-            room.transform.position.z
-        );
+        Vector3 spawnPos = room.transform.position + new Vector3(0f, 1f, 0f);
 
         Instantiate(playerPrefab, spawnPos, Quaternion.identity);
     }
