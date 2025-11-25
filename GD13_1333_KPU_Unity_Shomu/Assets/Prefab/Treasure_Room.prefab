@@ -587,7 +587,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7356065743134086616}
   - component: {fileID: 5080282081323565651}
-  - component: {fileID: 4123126783671965852}
+  - component: {fileID: 6463266266496740014}
   m_Layer: 0
   m_Name: Treasure_Room
   m_TagString: Untagged
@@ -631,11 +631,7 @@ MonoBehaviour:
   SouthDoorway: {fileID: 7691633044022118256}
   EastDoorway: {fileID: 4473298813306058915}
   WestDoorway: {fileID: 5775618943762601193}
-  northDoor: {fileID: 0}
-  southDoor: {fileID: 0}
-  eastDoor: {fileID: 0}
-  westDoor: {fileID: 0}
---- !u!114 &4123126783671965852
+--- !u!114 &6463266266496740014
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -644,15 +640,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2219284630469085078}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04a3416f41bf792479b61cf4f170d533, type: 3}
+  m_Script: {fileID: 11500000, guid: 2707d38bcdbdf6647ad13f053654adb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  north: {fileID: 4123126783671965852}
-  south: {fileID: 4123126783671965852}
-  east: {fileID: 4123126783671965852}
-  west: {fileID: 4123126783671965852}
+  north: {fileID: 6463266266496740014}
+  south: {fileID: 6463266266496740014}
+  east: {fileID: 6463266266496740014}
+  west: {fileID: 6463266266496740014}
   gridPosition: {x: 0, y: 0}
-  roomType: 0
+  roomType: 1
   roomName: Treasure Room
   directionArrow: {fileID: 0}
   treasureObject: {fileID: 0}
