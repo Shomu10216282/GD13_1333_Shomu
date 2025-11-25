@@ -44,10 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca8c9cf7c5d50f42ae74959644a0d74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseRoomPrefab: {fileID: 0}
-  treasureRoomPrefab: {fileID: 0}
-  combatRoomPrefab: {fileID: 0}
-  mapWidth: 3
-  mapHeight: 3
-  roomSpacing: 10
+  baseRoomPrefab: {fileID: 4474811452648524398, guid: 116f909db9c39bb45a502e1a99daa2d5, type: 3}
+  treasureRoomPrefab: {fileID: 4474811452648524398, guid: 47e5abcb0966392489984d2744b8991b, type: 3}
+  combatRoomPrefab: {fileID: 5845234399218193842, guid: 31ad09f71ff39e54f8d7b027098fa930, type: 3}
+  mapWidth: 10
+  mapHeight: 10
+  roomSpacing: 11
   generatedRooms: []
