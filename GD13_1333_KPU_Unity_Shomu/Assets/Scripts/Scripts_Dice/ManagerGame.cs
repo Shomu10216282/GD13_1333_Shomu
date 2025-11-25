@@ -6,6 +6,9 @@ public class ManagerGame : MonoBehaviour
     public MapGenerator mapGenerator;
     public GameObject playerPrefab;
 
+    [Header("Game Settings")]
+    public int scoreToWin = 5;
+
     private void Start()
     {
         mapGenerator.GenerateMap();
@@ -20,6 +23,8 @@ public class ManagerGame : MonoBehaviour
             Random.Range(0, mapGenerator.generatedRooms.Count)];
 
         SpawnPlayer(randomRoom);
+
+        GameState.OnScoreChanged += CheckWinCondition;
     }
 
     private void SpawnPlayer(Room room)
@@ -31,6 +36,7 @@ public class ManagerGame : MonoBehaviour
         }
 
         float floorY = room.transform.position.y;
+
         Collider[] cols = room.GetComponentsInChildren<Collider>();
         foreach (Collider col in cols)
         {
@@ -40,17 +46,23 @@ public class ManagerGame : MonoBehaviour
 
         Vector3 spawnPos = new Vector3(
             room.transform.position.x,
-            floorY + 1f, 
+            floorY + 1f,
             room.transform.position.z
         );
 
-        GameObject playerObj = Instantiate(playerPrefab, spawnPos, Quaternion.identity);
+        Instantiate(playerPrefab, spawnPos, Quaternion.identity);
+    }
 
-        Rigidbody rb = playerObj.GetComponent<Rigidbody>();
-        if (rb != null)
+    private void CheckWinCondition(int newScore)
+    {
+        if (newScore >= scoreToWin)
         {
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
+            Debug.Log("Game Cleared! You found all treasures!");
         }
+    }
+
+    private void OnDestroy()
+    {
+        GameState.OnScoreChanged -= CheckWinCondition;
     }
 }

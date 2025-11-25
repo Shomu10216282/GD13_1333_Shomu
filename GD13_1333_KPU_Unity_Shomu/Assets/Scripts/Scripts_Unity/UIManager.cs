@@ -1,81 +1,82 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    [Header("Treasure UI")]
-    public GameObject treasureText;
+    [Header("Player UI")]
+    public TMP_Text hpText;
+    public TMP_Text scoreText;
+    public TMP_Text messageText;
 
-    [Header("Battle UI")]
-    public TextMeshProUGUI playerDiceText;
-    public TextMeshProUGUI enemyDiceText;
-    public TextMeshProUGUI enemyHPText;
-
-    [Header("Player Stats")]
-    public TextMeshProUGUI playerHPText; 
-    public TextMeshProUGUI playerScoreText; 
-
-    [Header("General Messages")]
-    public TextMeshProUGUI messageText;
+    [Header("Combat UI")]
+    public GameObject combatPanel;
+    public TMP_Text playerDiceText;
+    public TMP_Text enemyDiceText;
+    public TMP_Text enemyHPText;
+    public TMP_Text resultText;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
         {
             Destroy(gameObject);
-            return;
         }
 
-        Instance = this;
+        combatPanel.SetActive(false); 
+        messageText.text = "";
     }
 
     public void UpdateHP(int hp)
     {
-        if (playerHPText != null)
-            playerHPText.text = "HP: " + hp;
+        hpText.text = "HP: " + hp;
     }
 
     public void UpdateScore(int score)
     {
-        if (playerScoreText != null)
-            playerScoreText.text = "Score: " + score;
+        scoreText.text = "Score: " + score;
     }
 
-    public void ShowTreasureUI(bool show)
+    public void ShowMessage(string msg)
     {
-        if (treasureText != null)
-            treasureText.SetActive(show);
+        messageText.text = msg;
     }
 
-    public void ShowBattleResult(int playerDice, int enemyDice)
+    public void ClearMessage()
     {
-        if (playerDiceText != null)
-            playerDiceText.text = $"Player: {playerDice}";
+        messageText.text = "";
+    }
 
-        if (enemyDiceText != null)
-            enemyDiceText.text = $"Enemy: {enemyDice}";
+    public void ShowCombatUI()
+    {
+        combatPanel.SetActive(true);
+        resultText.text = "";
+    }
+
+    public void HideCombatUI()
+    {
+        combatPanel.SetActive(false);
+    }
+
+    public void UpdateDice(int playerDice, int enemyDice)
+    {
+        playerDiceText.text = "Player Dice: " + playerDice;
+        enemyDiceText.text = "Enemy Dice: " + enemyDice;
     }
 
     public void UpdateEnemyHP(int hp)
     {
-        if (enemyHPText != null)
-            enemyHPText.text = $"Enemy HP: {hp}";
+        enemyHPText.text = "Enemy HP: " + hp;
     }
 
-    public void ShowInteractMessage(string msg)
+    public void ShowBattleResult(string result)
     {
-        if (messageText != null)
-        {
-            messageText.text = msg;
-            messageText.gameObject.SetActive(true);
-        }
-    }
-
-    public void HideInteractMessage()
-    {
-        if (messageText != null)
-            messageText.gameObject.SetActive(false);
+        resultText.text = result;
     }
 }
