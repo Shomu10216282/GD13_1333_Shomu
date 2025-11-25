@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9059475971742491213}
+  - component: {fileID: 2361513454905864351}
   m_Layer: 0
   m_Name: MapGenerator
   m_TagString: Untagged
@@ -31,3 +32,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2361513454905864351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2391318379517889273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ca8c9cf7c5d50f42ae74959644a0d74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseRoomPrefab: {fileID: 0}
+  treasureRoomPrefab: {fileID: 0}
+  combatRoomPrefab: {fileID: 0}
+  mapWidth: 3
+  mapHeight: 3
+  roomSpacing: 10
+  generatedRooms: []

@@ -250,7 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d01ce904280361743ae0d9fb596b9be7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapGenerator: {fileID: 8560499530726264277, guid: f66ca2e336aa0b94cafa08d97e015f9e, type: 3}
+  mapGenerator: {fileID: 2361513454905864351, guid: f66ca2e336aa0b94cafa08d97e015f9e, type: 3}
   playerPrefab: {fileID: 4594238569501102276, guid: ce27753815d26b941a9694e31f03f274, type: 3}
 --- !u!4 &731805284
 Transform:
