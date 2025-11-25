@@ -1,53 +1,75 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("Movement Settings")]
     public float moveSpeed = 4f;
-    public float mouseSensitivity = 2f;
+    public float rotationSpeed = 120f; 
 
     private Rigidbody rb;
-    private Camera playerCamera;
-    private float cameraPitch = 0f;
+    private Room currentRoom;
 
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
-        playerCamera = GetComponentInChildren<Camera>();
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
-    void Update()
+    private void Update()
     {
-        HandleLook();
+        HandleInteraction();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         HandleMovement();
+        HandleRotation();
     }
 
     private void HandleMovement()
     {
-        float x = Input.GetAxis("Horizontal"); // A/D
-        float z = Input.GetAxis("Vertical");   // W/S
+        float forward = 0f;
 
-        Vector3 move = (transform.right * x + transform.forward * z).normalized;
-        rb.MovePosition(rb.position + move * moveSpeed * Time.fixedDeltaTime);
+        if (Input.GetKey(KeyCode.W)) forward += 1f;
+        if (Input.GetKey(KeyCode.S)) forward -= 1f;
+
+        Vector3 moveDir = transform.forward * forward;
+        rb.MovePosition(rb.position + moveDir * moveSpeed * Time.fixedDeltaTime);
     }
 
-    private void HandleLook()
+    private void HandleRotation()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+        float rotation = 0f;
 
-        transform.Rotate(Vector3.up * mouseX);
+        if (Input.GetKey(KeyCode.D)) rotation += 1f;
+        if (Input.GetKey(KeyCode.A)) rotation -= 1f;
 
-        cameraPitch -= mouseY;
-        cameraPitch = Mathf.Clamp(cameraPitch, -45f, 70f);
-        playerCamera.transform.localEulerAngles = new Vector3(cameraPitch, 0f, 0f);
+        rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, rotation * rotationSpeed * Time.fixedDeltaTime, 0f));
+    }
+
+    private void HandleInteraction()
+    {
+        if (Input.GetKeyDown(KeyCode.F) && currentRoom != null)
+        {
+            currentRoom.TriggerPlayerInteract();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Room room = other.GetComponent<Room>();
+        if (room != null)
+            currentRoom = room;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Room room = other.GetComponent<Room>();
+        if (room != null && room == currentRoom)
+            currentRoom = null;
     }
 }

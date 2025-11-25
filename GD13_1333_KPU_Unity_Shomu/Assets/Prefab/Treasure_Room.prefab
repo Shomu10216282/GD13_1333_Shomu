@@ -648,7 +648,11 @@ MonoBehaviour:
   east: {fileID: 6463266266496740014}
   west: {fileID: 6463266266496740014}
   gridPosition: {x: 0, y: 0}
+<<<<<<< Updated upstream
   roomType: 1
+=======
+  roomType: 0
+>>>>>>> Stashed changes
   roomName: Treasure Room
   directionArrow: {fileID: 0}
   treasureObject: {fileID: 0}

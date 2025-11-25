@@ -685,7 +685,11 @@ MonoBehaviour:
   east: {fileID: 2945565046811527055}
   west: {fileID: 2945565046811527055}
   gridPosition: {x: 0, y: 0}
+<<<<<<< Updated upstream
   roomType: 2
+=======
+  roomType: 0
+>>>>>>> Stashed changes
   roomName: Combat Room
   directionArrow: {fileID: 0}
   door: {fileID: 0}
