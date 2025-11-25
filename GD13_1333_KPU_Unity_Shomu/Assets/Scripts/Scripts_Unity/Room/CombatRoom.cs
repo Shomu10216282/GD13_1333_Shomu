@@ -1,139 +1,83 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class CombatRoom : Room
 {
-    [Header("Combat Settings")]
-    public GameObject door;
-    public GameObject enemyPrefab;
-    public Transform[] spawnPoints;
+    [Header("Enemy Settings")]
+    public int enemyHP = 1;
+    private bool playerInRoom = false;
+    private bool battleActive = false;
 
-    private bool combatStarted = false;
-    private bool combatFinished = false;
-
-    private List<Enemy> enemies = new List<Enemy>();
-    private Room previousRoom;
-
-    protected override void Start()
+    private void Update()
     {
-        roomName = "Combat Room";
-        base.Start();
+        if (playerInRoom && Input.GetKeyDown(KeyCode.F))
+        {
+            if (!battleActive)
+            {
+                StartBattle();
+            }
+            else
+            {
+                ContinueBattle();
+            }
+        }
     }
 
     protected override void OnPlayerEnter()
     {
-        if (!combatStarted)
+        playerInRoom = true;
+        UIManager.Instance.ShowMessage("Press F to Battle");
+        UIManager.Instance.UpdateEnemyHP(enemyHP);
+    }
+
+    protected override void OnPlayerExit()
+    {
+        playerInRoom = false;
+        UIManager.Instance.ClearMessage();
+        UIManager.Instance.HideCombatUI();
+    }
+
+    void StartBattle()
+    {
+        battleActive = true;
+        UIManager.Instance.ShowCombatUI();
+        UIManager.Instance.ShowMessage("Press F to Roll Dice");
+    }
+
+    void ContinueBattle()
+    {
+        int playerDice = Random.Range(1, 7);
+        int enemyDice = Random.Range(1, 7);
+
+        UIManager.Instance.UpdateDice(playerDice, enemyDice);
+
+        if (playerDice > enemyDice)
         {
-            combatStarted = true;
-            combatFinished = false;
-            StartCombat();
+            enemyHP -= 1;
+            UIManager.Instance.UpdateEnemyHP(enemyHP);
+
+            if (enemyHP <= 0)
+            {
+                UIManager.Instance.ShowBattleResult("YOU WIN!");
+                UIManager.Instance.ShowMessage("Enemy Defeated!");
+
+                GameState.AddScore(1);
+
+                battleActive = false;
+                return;
+            }
+
+            UIManager.Instance.ShowBattleResult("Hit! Enemy -1 HP");
         }
-    }
-
-    private void StartCombat()
-    {
-        Debug.Log("Combat Started!");
-
-        if (door != null)
-            door.SetActive(true);
-
-        enemies.Clear();
-
-        foreach (Transform t in spawnPoints)
+        else if (playerDice < enemyDice)
         {
-            GameObject eObj = Instantiate(enemyPrefab, t.position, Quaternion.identity);
-            Enemy enemyComponent = eObj.GetComponent<Enemy>();
-
-            enemyComponent.onDeath = OnEnemyDead;
-
-            enemies.Add(enemyComponent);
-        }
-    }
-
-    private void OnEnemyDead(Enemy enemy)
-    {
-        enemies.Remove(enemy);
-
-        if (enemies.Count == 0)
-            EndCombat();
-    }
-
-    private void EndCombat()
-    {
-        combatFinished = true;
-
-        Debug.Log("Combat Cleared!");
-
-        if (door != null)
-            door.SetActive(false);
-    }
-
-    public void SetPreviousRoom(Room room)
-    {
-        previousRoom = room;
-    }
-
-    public override void TriggerPlayerInteract()
-    {
-        if (!combatFinished)
-        {
-            DiceBattle();
-            return;
-        }
-
-        base.TriggerPlayerInteract();
-    }
-
-    private void DiceBattle()
-    {
-        int playerRoll = Random.Range(1, 7);
-        int enemyRoll = Random.Range(1, 7);
-
-        Debug.Log($"Player rolled {playerRoll} / Enemy rolled {enemyRoll}");
-
-        if (playerRoll >= enemyRoll)
-        {
-            Debug.Log("You win the dice battle!");
-            DamageEnemyByDice();
+            GameState.TakeDamage(1);
+            UIManager.Instance.ShowBattleResult("You took damage! -1 HP");
         }
         else
         {
-            Debug.Log("You lose. Taking 1 damage...");
-            PlayerStats.TakeDamage(1);
-
-            ReturnPlayerToPreviousRoom();
-        }
-    }
-
-    private void DamageEnemyByDice()
-    {
-        if (enemies.Count == 0) return;
-
-        Enemy target = enemies[0];
-        target.TakeDamage(1); 
-
-        UIManager.Instance.UpdateEnemyHP(target.currentHP);
-
-        if (target.currentHP <= 0)
-        {
-        }
-    }
-
-    private void ReturnPlayerToPreviousRoom()
-    {
-        if (previousRoom == null)
-        {
-            Debug.Log("Previous room not set!");
-            return;
+            UIManager.Instance.ShowBattleResult("Draw");
         }
 
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
-        {
-            Vector3 pos = previousRoom.transform.position + Vector3.up * 1.5f;
-            player.transform.position = pos;
-
-            Debug.Log("Player returned to previous room after losing.");
-        }
+        UIManager.Instance.ShowMessage("Press F to Roll Again");
     }
 }

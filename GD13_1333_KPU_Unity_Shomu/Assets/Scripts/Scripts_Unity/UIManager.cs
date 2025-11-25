@@ -18,6 +18,9 @@ public class UIManager : MonoBehaviour
     public TMP_Text enemyHPText;
     public TMP_Text resultText;
 
+    [Header("Treasure UI")]
+    public GameObject treasureText;
+
     private void Awake()
     {
         if (Instance == null)
@@ -29,7 +32,7 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        combatPanel.SetActive(false); 
+        combatPanel.SetActive(false);
         messageText.text = "";
     }
 
@@ -78,5 +81,11 @@ public class UIManager : MonoBehaviour
     public void ShowBattleResult(string result)
     {
         resultText.text = result;
+    }
+
+    public void ShowTreasureUI(bool show)
+    {
+        if (treasureText != null)
+            treasureText.SetActive(show);
     }
 }
