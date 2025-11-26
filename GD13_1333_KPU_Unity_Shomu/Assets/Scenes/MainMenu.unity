@@ -394,8 +394,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -544,8 +544,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 14.320099, y: -77}
-  m_SizeDelta: {x: 295.7291, y: 93.5062}
+  m_AnchoredPosition: {x: 0.000020981, y: -54.813}
+  m_SizeDelta: {x: 339.2501, y: 109.6251}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &744658570
 MonoBehaviour:
@@ -739,8 +739,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -235}
-  m_SizeDelta: {x: 160, y: 104}
+  m_AnchoredPosition: {x: -8.8654, y: -271.5}
+  m_SizeDelta: {x: 197.0732, y: 177}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1008955106
 MonoBehaviour:
@@ -786,9 +786,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1760607308}
+      - m_Target: {fileID: 1760607304}
         m_TargetAssemblyTypeName: QuitButton, Assembly-CSharp
-        m_MethodName: OnQuitButtonPressed
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -848,7 +848,7 @@ GameObject:
   - component: {fileID: 1092451763}
   - component: {fileID: 1092451762}
   m_Layer: 5
-  m_Name: Image
+  m_Name: BackGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -870,8 +870,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.000015259}
-  m_SizeDelta: {x: 1101, y: 577}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1435, y: 720}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1092451762
 MonoBehaviour:
