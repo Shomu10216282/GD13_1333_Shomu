@@ -10,7 +10,16 @@ public static class GameState
     public static event Action OnGameClear;
     public static event Action OnGameOver;
 
-    private static int clearScore = 5; 
+    private static int clearScore = 5;
+
+    public static void Initialize()
+    {
+        HP = 10;
+        Score = 0;
+
+        UIManager.Instance.UpdateHP(HP);
+        UIManager.Instance.UpdateScore(Score);
+    }
 
     public static void AddScore(int amount)
     {
