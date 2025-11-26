@@ -21,6 +21,13 @@ public class UIManager : MonoBehaviour
     [Header("Treasure UI")]
     public GameObject treasureText;
 
+    [Header("Game End UI")]
+    public GameObject GameClear;   
+    public GameObject GameOver;    
+
+    [HideInInspector]
+    public bool isGameFrozen = false; 
+
     private void Awake()
     {
         if (Instance == null)
@@ -34,27 +41,19 @@ public class UIManager : MonoBehaviour
 
         combatPanel.SetActive(false);
         messageText.text = "";
+
+        if (GameClear != null) GameClear.SetActive(false);
+        if (GameOver != null) GameOver.SetActive(false);
+
+        GameState.OnGameClear += ShowGameClear;
+        GameState.OnGameOver += ShowGameOver;
     }
 
-    public void UpdateHP(int hp)
-    {
-        hpText.text = "HP: " + hp;
-    }
+    public void UpdateHP(int hp) => hpText.text = "HP: " + hp;
+    public void UpdateScore(int score) => scoreText.text = "Score: " + score;
 
-    public void UpdateScore(int score)
-    {
-        scoreText.text = "Score: " + score;
-    }
-
-    public void ShowMessage(string msg)
-    {
-        messageText.text = msg;
-    }
-
-    public void ClearMessage()
-    {
-        messageText.text = "";
-    }
+    public void ShowMessage(string msg) => messageText.text = msg;
+    public void ClearMessage() => messageText.text = "";
 
     public void ShowCombatUI()
     {
@@ -62,10 +61,7 @@ public class UIManager : MonoBehaviour
         resultText.text = "";
     }
 
-    public void HideCombatUI()
-    {
-        combatPanel.SetActive(false);
-    }
+    public void HideCombatUI() => combatPanel.SetActive(false);
 
     public void UpdateDice(int playerDice, int enemyDice)
     {
@@ -73,19 +69,27 @@ public class UIManager : MonoBehaviour
         enemyDiceText.text = "Enemy Dice: " + enemyDice;
     }
 
-    public void UpdateEnemyHP(int hp)
-    {
-        enemyHPText.text = "Enemy HP: " + hp;
-    }
-
-    public void ShowBattleResult(string result)
-    {
-        resultText.text = result;
-    }
+    public void UpdateEnemyHP(int hp) => enemyHPText.text = "Enemy HP: " + hp;
 
     public void ShowTreasureUI(bool show)
     {
         if (treasureText != null)
             treasureText.SetActive(show);
+    }
+
+    public void ShowGameClear()
+    {
+        isGameFrozen = true;
+
+        if (GameClear != null)
+            GameClear.SetActive(true);
+    }
+
+    public void ShowGameOver()
+    {
+        isGameFrozen = true;
+
+        if (GameOver != null)
+            GameOver.SetActive(true);
     }
 }
