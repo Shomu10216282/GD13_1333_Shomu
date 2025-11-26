@@ -23,26 +23,48 @@ public class Room : MonoBehaviour
     [Header("Direction Arrow")]
     public GameObject directionArrow;
 
-    protected bool playerInside = false;
+    [Header("Doors")]
+    public GameObject northDoor;
+    public GameObject southDoor;
+    public GameObject eastDoor;
+    public GameObject westDoor;
+    public float openDistance = 1f;
 
+    protected bool playerInside = false;
+    protected Transform playerTransform;
 
     protected virtual void Start()
     {
-        Debug.Log(roomName + " initialized.");
         if (directionArrow != null)
             directionArrow.SetActive(false);
+
+        if (northDoor != null) northDoor.SetActive(true);
+        if (southDoor != null) southDoor.SetActive(true);
+        if (eastDoor != null) eastDoor.SetActive(true);
+        if (westDoor != null) westDoor.SetActive(true);
     }
 
-
-    private void OnDrawGizmos()
+    private void Update()
     {
-        Gizmos.color = Color.yellow;
-        Vector3 pos = transform.position;
+        HandleDoors();
+    }
 
-        if (north) Gizmos.DrawLine(pos, north.transform.position);
-        if (south) Gizmos.DrawLine(pos, south.transform.position);
-        if (east) Gizmos.DrawLine(pos, east.transform.position);
-        if (west) Gizmos.DrawLine(pos, west.transform.position);
+    private void HandleDoors()
+    {
+        if (!playerInside || playerTransform == null) return;
+
+        OpenOrCloseDoor(northDoor);
+        OpenOrCloseDoor(southDoor);
+        OpenOrCloseDoor(eastDoor);
+        OpenOrCloseDoor(westDoor);
+    }
+
+    private void OpenOrCloseDoor(GameObject door)
+    {
+        if (door == null) return;
+
+        float distance = Vector3.Distance(playerTransform.position, door.transform.position);
+        door.SetActive(distance > openDistance); 
     }
 
     protected virtual void OnTriggerEnter(Collider other)
@@ -50,6 +72,7 @@ public class Room : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInside = true;
+            playerTransform = other.transform;
             OnPlayerEnter();
         }
     }
@@ -59,27 +82,29 @@ public class Room : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInside = false;
+            playerTransform = null;
+
+            if (northDoor != null) northDoor.SetActive(true);
+            if (southDoor != null) southDoor.SetActive(true);
+            if (eastDoor != null) eastDoor.SetActive(true);
+            if (westDoor != null) westDoor.SetActive(true);
+
             HideArrow();
             OnPlayerExit();
         }
     }
-
 
     public virtual void TriggerPlayerInteract()
     {
         ShowDirectionGuide();
     }
 
-
     protected void ShowDirectionGuide()
     {
         Room next = GetNextRoom();
 
         if (next == null)
-        {
-            Debug.Log("No room to go");
             return;
-        }
 
         if (directionArrow != null)
         {
@@ -87,8 +112,6 @@ public class Room : MonoBehaviour
             directionArrow.SetActive(true);
             Invoke(nameof(HideArrow), 3f);
         }
-
-        Debug.Log("Next Room: " + next.roomName);
     }
 
     protected void HideArrow()
@@ -97,17 +120,14 @@ public class Room : MonoBehaviour
             directionArrow.SetActive(false);
     }
 
-
     public Room GetNextRoom()
     {
         if (north != null) return north;
         if (east != null) return east;
         if (south != null) return south;
         if (west != null) return west;
-
         return null;
     }
-
 
     protected virtual void OnPlayerEnter() { }
     protected virtual void OnPlayerExit() { }

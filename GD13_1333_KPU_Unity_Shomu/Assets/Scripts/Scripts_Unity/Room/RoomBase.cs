@@ -1,24 +1,43 @@
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.InputSystem.EnhancedTouch;
 
-public class RoomBase : MonoBehaviour 
+public class RoomBase : MonoBehaviour
 {
-    [SerializeField] private GameObject NorthDoorway, SouthDoorway, EastDoorway, WestDoorway;
-    private RoomBase _east;
+    [Header("Doorways")]
+    [SerializeField] private GameObject NorthDoorway;
+    [SerializeField] private GameObject SouthDoorway;
+    [SerializeField] private GameObject EastDoorway;
+    [SerializeField] private GameObject WestDoorway;
+
     private RoomBase _north;
     private RoomBase _south;
+    private RoomBase _east;
     private RoomBase _west;
 
     public void SetRooms(RoomBase roomNorth, RoomBase roomEast, RoomBase roomSouth, RoomBase roomWest)
     {
         _north = roomNorth;
-        NorthDoorway.SetActive(_north == null);
         _east = roomEast;
-        EastDoorway.SetActive(_east == null);
         _south = roomSouth;
-        SouthDoorway.SetActive(_south == null);
         _west = roomWest;
-        WestDoorway.SetActive(_west == null);
+
+        SetupDoor(NorthDoorway, _north);
+        SetupDoor(EastDoorway, _east);
+        SetupDoor(SouthDoorway, _south);
+        SetupDoor(WestDoorway, _west);
+    }
+    private void SetupDoor(GameObject door, RoomBase adjacentRoom)
+    {
+        if (door == null) return;
+
+        door.SetActive(true);
+
+        Collider col = door.GetComponent<Collider>();
+        if (col == null)
+            col = door.GetComponentInChildren<Collider>();
+
+        if (col != null)
+        {
+            col.enabled = (adjacentRoom == null);
+        }
     }
 }

@@ -4,7 +4,6 @@ public class TreasureRoom : Room
 {
     public GameObject treasureObject;
     private bool taken = false;
-    private bool playerInside = false;
 
     [Header("Treasure Settings")]
     public int treasureValue = 1;
@@ -29,7 +28,6 @@ public class TreasureRoom : Room
     protected override void OnPlayerEnter()
     {
         base.OnPlayerEnter();
-        playerInside = true;
 
         if (!taken)
             UIManager.Instance.ShowTreasureUI(true);
@@ -38,8 +36,6 @@ public class TreasureRoom : Room
     protected override void OnPlayerExit()
     {
         base.OnPlayerExit();
-        playerInside = false;
-
         UIManager.Instance.ShowTreasureUI(false);
     }
 
@@ -51,7 +47,6 @@ public class TreasureRoom : Room
             treasureObject.SetActive(false);
 
         GameState.AddScore(treasureValue);
-
         UIManager.Instance.ShowTreasureUI(false);
 
         Debug.Log($"Treasure obtained! +{treasureValue} point");
