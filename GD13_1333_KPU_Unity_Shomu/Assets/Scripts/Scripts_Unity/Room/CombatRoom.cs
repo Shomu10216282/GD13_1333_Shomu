@@ -6,9 +6,18 @@ public class CombatRoom : Room
     public int enemyHP = 1;
     private bool battleActive = false;
 
+    private PlayerController player;
+
+    private float inputCooldown = 0.2f;
+    private float lastInputTime = 0f;
+
     protected override void OnPlayerEnter()
     {
         base.OnPlayerEnter();
+
+        player = FindObjectOfType<PlayerController>();
+        if (player != null) player.canMove = true;
+
         UIManager.Instance.ShowMessage("Press F to Battle");
         UIManager.Instance.UpdateEnemyHP(enemyHP);
     }
@@ -16,31 +25,38 @@ public class CombatRoom : Room
     protected override void OnPlayerExit()
     {
         base.OnPlayerExit();
+
+        EndBattle();
         UIManager.Instance.ClearMessage();
-        UIManager.Instance.HideCombatUI();
-        battleActive = false;
     }
 
-    private void Update()
+    public override void TriggerPlayerInteract()
     {
-        if (playerInside && Input.GetKeyDown(KeyCode.F))
-        {
-            if (!battleActive)
-                StartBattle();
-            else
-                ContinueBattle();
-        }
+        if (Time.time - lastInputTime < inputCooldown)
+            return;
+
+        lastInputTime = Time.time;
+
+        if (!battleActive)
+            StartBattle();
+        else
+            ContinueBattle();
     }
 
     private void StartBattle()
     {
         battleActive = true;
+
+        if (player != null) player.canMove = false;
+
         UIManager.Instance.ShowCombatUI();
         UIManager.Instance.ShowMessage("Press F to Roll Dice");
     }
 
     private void ContinueBattle()
     {
+        if (!battleActive) return;
+
         int playerDice = Random.Range(1, 7);
         int enemyDice = Random.Range(1, 7);
 
@@ -50,28 +66,33 @@ public class CombatRoom : Room
         {
             enemyHP -= 1;
             UIManager.Instance.UpdateEnemyHP(enemyHP);
+            UIManager.Instance.ShowMessage("Hit! Enemy -1 HP");
 
             if (enemyHP <= 0)
             {
-                UIManager.Instance.ShowBattleResult("YOU WIN!");
-                UIManager.Instance.ShowMessage("Enemy Defeated!");
-                GameState.AddScore(1);
-                battleActive = false;
-                return;
+                UIManager.Instance.ShowMessage("YOU WIN!");
+                EndBattle();
             }
-
-            UIManager.Instance.ShowBattleResult("Hit! Enemy -1 HP");
         }
         else if (playerDice < enemyDice)
         {
             GameState.TakeDamage(1);
-            UIManager.Instance.ShowBattleResult("You took damage! -1 HP");
+            UIManager.Instance.ShowMessage("You took damage! -1 HP");
+            EndBattle();
         }
         else
         {
-            UIManager.Instance.ShowBattleResult("Draw");
+            UIManager.Instance.ShowMessage("Draw");
+            EndBattle();
         }
+    }
 
-        UIManager.Instance.ShowMessage("Press F to Roll Again");
+    private void EndBattle()
+    {
+        battleActive = false;
+
+        if (player != null) player.canMove = true;
+
+        UIManager.Instance.HideCombatUI();
     }
 }

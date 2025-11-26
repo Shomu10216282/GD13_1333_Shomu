@@ -1512,6 +1512,7 @@ GameObject:
   - component: {fileID: 1392302066048748864}
   - component: {fileID: 4738017274972280759}
   - component: {fileID: 6377430030067055510}
+  - component: {fileID: 1614365170898858408}
   m_Layer: 0
   m_Name: Base_Room
   m_TagString: Untagged
@@ -1580,6 +1581,27 @@ MonoBehaviour:
   eastDoor: {fileID: 7559359025691167946}
   westDoor: {fileID: 8861632799530388550}
   openDistance: 1
+--- !u!65 &1614365170898858408
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4474811452648524398}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5364614122936963766
 GameObject:
   m_ObjectHideFlags: 0

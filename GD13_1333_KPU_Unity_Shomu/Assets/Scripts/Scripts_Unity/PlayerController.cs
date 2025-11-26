@@ -5,10 +5,11 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float moveSpeed = 4f;
-    public float rotationSpeed = 120f; 
+    public float rotationSpeed = 120f;
 
     private Rigidbody rb;
     private Room currentRoom;
+    public bool canMove = true;
 
     private void Start()
     {
@@ -26,6 +27,9 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!canMove)
+            return;
+
         HandleMovement();
         HandleRotation();
     }
