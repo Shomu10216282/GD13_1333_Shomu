@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &11764055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,11 +190,11 @@ RectTransform:
   - {fileID: 2105900363}
   - {fileID: 1590513133}
   - {fileID: 155716708}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 101060797}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 538.2963, y: 288.75104}
+  m_AnchoredPosition: {x: 0.29626465, y: 0.2510376}
   m_SizeDelta: {x: 1076.6902, y: 577.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &101060793
@@ -298,6 +298,7 @@ RectTransform:
   - {fileID: 1734954982}
   - {fileID: 1684235222}
   - {fileID: 932978369}
+  - {fileID: 11764057}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1136,7 +1137,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '" "'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3213,8 +3214,9 @@ MonoBehaviour:
   enemyHPText: {fileID: 1880726610}
   resultText: {fileID: 681033244}
   treasureText: {fileID: 1734954979}
-  GameClear: {fileID: 0}
-  GameOver: {fileID: 0}
+  gameClearPanel: {fileID: 1684235221}
+  gameOverPanel: {fileID: 932978368}
+  pausePanel: {fileID: 11764054}
   isGameFrozen: 0
 --- !u!4 &1733743407
 Transform:
@@ -3811,7 +3813,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4287637572
+    rgba: 4278714112
   m_fontColor: {r: 0, g: 1, b: 0.028357267, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -4162,6 +4164,5 @@ SceneRoots:
   - {fileID: 731805284}
   - {fileID: 883994206}
   - {fileID: 101060797}
-  - {fileID: 11764057}
   - {fileID: 1733743407}
   - {fileID: 942863910}

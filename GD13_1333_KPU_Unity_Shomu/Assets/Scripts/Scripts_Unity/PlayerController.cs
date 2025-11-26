@@ -15,20 +15,34 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
     private void Update()
     {
-        HandleInteraction();
+        if ((UIManager.Instance.gameClearPanel.activeSelf) ||
+            (UIManager.Instance.gameOverPanel.activeSelf)) return;
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            UIManager.Instance.TogglePauseUI();
+        }
+
+        if (Input.GetKeyDown(KeyCode.F) && currentRoom != null)
+        {
+            if (!UIManager.Instance.pausePanel.activeSelf)
+                currentRoom.TriggerPlayerInteract();
+        }
     }
 
     private void FixedUpdate()
     {
-        if (!canMove)
-            return;
+        if (!canMove ||
+            UIManager.Instance.isGameFrozen ||
+            UIManager.Instance.combatPanel.activeSelf ||
+            UIManager.Instance.gameClearPanel.activeSelf ||
+            UIManager.Instance.gameOverPanel.activeSelf) return;
 
         HandleMovement();
         HandleRotation();
@@ -37,7 +51,6 @@ public class PlayerController : MonoBehaviour
     private void HandleMovement()
     {
         float forward = 0f;
-
         if (Input.GetKey(KeyCode.W)) forward += 1f;
         if (Input.GetKey(KeyCode.S)) forward -= 1f;
 
@@ -48,32 +61,21 @@ public class PlayerController : MonoBehaviour
     private void HandleRotation()
     {
         float rotation = 0f;
-
         if (Input.GetKey(KeyCode.D)) rotation += 1f;
         if (Input.GetKey(KeyCode.A)) rotation -= 1f;
 
         rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, rotation * rotationSpeed * Time.fixedDeltaTime, 0f));
     }
 
-    private void HandleInteraction()
-    {
-        if (Input.GetKeyDown(KeyCode.F) && currentRoom != null)
-        {
-            currentRoom.TriggerPlayerInteract();
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         Room room = other.GetComponent<Room>();
-        if (room != null)
-            currentRoom = room;
+        if (room != null) currentRoom = room;
     }
 
     private void OnTriggerExit(Collider other)
     {
         Room room = other.GetComponent<Room>();
-        if (room != null && room == currentRoom)
-            currentRoom = null;
+        if (room != null && room == currentRoom) currentRoom = null;
     }
 }

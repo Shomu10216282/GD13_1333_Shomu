@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class UIManager : MonoBehaviour
@@ -22,28 +21,25 @@ public class UIManager : MonoBehaviour
     public GameObject treasureText;
 
     [Header("Game End UI")]
-    public GameObject GameClear;   
-    public GameObject GameOver;    
+    public GameObject gameClearPanel;
+    public GameObject gameOverPanel;
+
+    [Header("Pause UI")]
+    public GameObject pausePanel;
 
     [HideInInspector]
-    public bool isGameFrozen = false; 
+    public bool isGameFrozen = false;  
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
 
         combatPanel.SetActive(false);
-        messageText.text = "";
-
-        if (GameClear != null) GameClear.SetActive(false);
-        if (GameOver != null) GameOver.SetActive(false);
+        pausePanel?.SetActive(false);
+        treasureText?.SetActive(false);
+        gameClearPanel?.SetActive(false);
+        gameOverPanel?.SetActive(false);
 
         GameState.OnGameClear += ShowGameClear;
         GameState.OnGameOver += ShowGameOver;
@@ -51,7 +47,6 @@ public class UIManager : MonoBehaviour
 
     public void UpdateHP(int hp) => hpText.text = "HP: " + hp;
     public void UpdateScore(int score) => scoreText.text = "Score: " + score;
-
     public void ShowMessage(string msg) => messageText.text = msg;
     public void ClearMessage() => messageText.text = "";
 
@@ -73,23 +68,27 @@ public class UIManager : MonoBehaviour
 
     public void ShowTreasureUI(bool show)
     {
-        if (treasureText != null)
-            treasureText.SetActive(show);
+        if (treasureText != null) treasureText.SetActive(show);
     }
 
     public void ShowGameClear()
     {
         isGameFrozen = true;
-
-        if (GameClear != null)
-            GameClear.SetActive(true);
+        gameClearPanel?.SetActive(true);
     }
 
     public void ShowGameOver()
     {
         isGameFrozen = true;
+        gameOverPanel?.SetActive(true);
+    }
 
-        if (GameOver != null)
-            GameOver.SetActive(true);
+    public void TogglePauseUI()
+    {
+        if (combatPanel.activeSelf || gameClearPanel.activeSelf || gameOverPanel.activeSelf) return;
+
+        bool isActive = pausePanel.activeSelf;
+        pausePanel.SetActive(!isActive);
+        isGameFrozen = !isActive; 
     }
 }
