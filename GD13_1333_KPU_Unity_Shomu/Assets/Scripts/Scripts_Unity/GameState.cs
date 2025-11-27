@@ -4,7 +4,7 @@ using System;
 public static class GameState
 {
     public static int HP = 5;
-    public static int Score = 0;
+    public static int Score = 0/5;
 
     public static event Action<int> OnScoreChanged;
     public static event Action OnGameClear;
