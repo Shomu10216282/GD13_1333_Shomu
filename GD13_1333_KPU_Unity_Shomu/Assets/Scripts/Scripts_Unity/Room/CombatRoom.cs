@@ -12,6 +12,20 @@ public class CombatRoom : Room
     private float inputCooldown = 0.2f;
     private float lastInputTime = 0f;
 
+    [Header("Audio Settings")]
+    public AudioClip diceClip;
+    private AudioSource diceAudio;
+
+    public float diceResultDelay = 0.1f;
+
+    private void Start()
+    {
+        diceAudio = gameObject.AddComponent<AudioSource>();
+        diceAudio.playOnAwake = false;
+        diceAudio.loop = false;
+        diceAudio.volume = 1f;
+    }
+
     protected override void OnPlayerEnter()
     {
         base.OnPlayerEnter();
@@ -20,13 +34,9 @@ public class CombatRoom : Room
         if (player != null) player.canMove = true;
 
         if (!battleDone)
-        {
             UIManager.Instance.ShowMessage("Press F to Battle");
-        }
         else
-        {
             UIManager.Instance.ShowMessage("This room's battle is already cleared.");
-        }
 
         UIManager.Instance.UpdateEnemyHP(enemyHP);
     }
@@ -56,7 +66,7 @@ public class CombatRoom : Room
         if (!battleActive)
             StartBattle();
         else
-            ContinueBattle();
+            StartCoroutine(DiceRoutine());
     }
 
     private void StartBattle()
@@ -66,12 +76,24 @@ public class CombatRoom : Room
         if (player != null) player.canMove = false;
 
         UIManager.Instance.ClearMessage();
-
         UIManager.Instance.ShowCombatUI();
-
-        UIManager.Instance.UpdateDice(0, 0);
-
         UIManager.Instance.ShowBattleResult("Press F to Roll Dice");
+    }
+
+    private System.Collections.IEnumerator DiceRoutine()
+    {
+        // ????
+        if (diceClip != null)
+            diceAudio.PlayOneShot(diceClip);
+
+        // ????????
+        if (diceClip != null)
+            yield return new WaitForSeconds(diceClip.length);
+
+        // ???????
+        yield return new WaitForSeconds(diceResultDelay);
+
+        ContinueBattle();
     }
 
     private void ContinueBattle()
@@ -100,14 +122,12 @@ public class CombatRoom : Room
         {
             GameState.TakeDamage(1);
             UIManager.Instance.ShowBattleResult("You took damage! -1 HP (Press F to close)");
-
             battleDone = true;
             EndBattle();
         }
         else
         {
             UIManager.Instance.ShowBattleResult("Draw (Press F to close)");
-
             battleDone = true;
             EndBattle();
         }
@@ -134,9 +154,7 @@ public class CombatRoom : Room
             {
                 UIManager.Instance.HideCombatUI();
                 UIManager.Instance.HideBattleResult();
-
                 UIManager.Instance.ShowMessage("This room's battle is already cleared.");
-
                 closed = true;
             }
             yield return null;
