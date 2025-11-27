@@ -1,7 +1,4 @@
 using System;
-using UnityEngine;
-using static UnityEditor.Progress;
-
 
 namespace GD13_1333_Shomu.Scripts
 {
@@ -15,11 +12,6 @@ namespace GD13_1333_Shomu.Scripts
         public int PlayerCol { get; private set; }
 
         private System.Random rand = new System.Random();
-
-
-        int mapSize = 3;
-        public int MapSize => mapSize;
-        RoomBase[] Rooms;
 
         public Map()
         {
@@ -64,14 +56,9 @@ namespace GD13_1333_Shomu.Scripts
                 for (int c = 0; c < Cols; c++)
                 {
                     if (r == PlayerRow && c == PlayerCol)
-                    {
                         Console.Write("[P] ");
-                    }
                     else
-                    {
-                        char ch = grid[r, c].MapSymbol;
-                        Console.Write($"[{ch}] ");
-                    }
+                        Console.Write($"[{grid[r, c].MapSymbol}] ");
                 }
                 Console.WriteLine();
             }
@@ -82,17 +69,17 @@ namespace GD13_1333_Shomu.Scripts
 
         public bool TryMove(string dir)
         {
-            dir = dir.ToUpper();
             int newR = PlayerRow;
             int newC = PlayerCol;
-            switch (dir)
+            switch (dir.ToUpper())
             {
-                case "N": newR = PlayerRow - 1; break;
-                case "S": newR = PlayerRow + 1; break;
-                case "E": newC = PlayerCol + 1; break;
-                case "W": newC = PlayerCol - 1; break;
+                case "N": newR--; break;
+                case "S": newR++; break;
+                case "E": newC++; break;
+                case "W": newC--; break;
                 default: return false;
             }
+
             if (newR < 0 || newR >= Rows || newC < 0 || newC >= Cols)
                 return false;
 
@@ -101,16 +88,9 @@ namespace GD13_1333_Shomu.Scripts
             return true;
         }
 
-        public bool AnyUnclearedEncounters()
+        internal bool AnyUnclearedEncounters()
         {
-            for (int r = 0; r < Rows; r++)
-                for (int c = 0; c < Cols; c++)
-                    if (grid[r, c] is EncounterRoom er && !er.IsCleared) return true;
-            return false;
+            throw new NotImplementedException();
         }
-    }
-
-    internal class RoomBase
-    {
     }
 }
