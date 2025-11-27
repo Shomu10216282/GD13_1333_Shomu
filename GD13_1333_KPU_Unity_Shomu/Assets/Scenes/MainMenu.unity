@@ -563,9 +563,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1760607304}
+      - m_Target: {fileID: 1760607308}
         m_TargetAssemblyTypeName: QuitButton, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: OnQuitButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -902,7 +902,6 @@ GameObject:
   - component: {fileID: 1609623940}
   - component: {fileID: 1609623939}
   - component: {fileID: 1609623941}
-  - component: {fileID: 1609623942}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -1041,19 +1040,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneToLoad: MainGame
---- !u!114 &1609623942
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1609623937}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a643a5e7770e6ce49a382dc373efc6f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameSceneName: Game
 --- !u!1 &1760607304
 GameObject:
   m_ObjectHideFlags: 0
@@ -1200,7 +1186,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1760607304}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cead9f9b1871bb4d88ef87f8be5e0df, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e728497c6dd72e4090cb488001babba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1975793790
