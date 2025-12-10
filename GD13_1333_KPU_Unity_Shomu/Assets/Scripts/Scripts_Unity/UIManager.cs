@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
     public TMP_Text playerDiceText;
     public TMP_Text enemyDiceText;
     public TMP_Text enemyHPText;
-    public TMP_Text resultText; 
+    public TMP_Text resultText;
 
     [Header("Treasure UI")]
     public GameObject treasureText;
@@ -30,6 +30,8 @@ public class UIManager : MonoBehaviour
     [HideInInspector]
     public bool isGameFrozen = false;
 
+    private int maxScore = 5;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -43,12 +45,23 @@ public class UIManager : MonoBehaviour
 
         GameState.OnGameClear += ShowGameClear;
         GameState.OnGameOver += ShowGameOver;
-        GameState.Initialize();
     }
 
+    public void SetMaxScore(int max)
+    {
+        maxScore = max;
+        UpdateScore(GameState.Score);
+    }
 
-    public void UpdateHP(int hp) => hpText.text = "HP: " + hp;
-    public void UpdateScore(int score) => scoreText.text = "Score: " + score;
+    public void UpdateHP(int hp)
+    {
+        hpText.text = "HP: " + hp;
+    }
+    public void UpdateScore(int score)
+    {
+        scoreText.text = $"Score: {score}/{20}";
+    }
+
     public void ShowMessage(string msg) => messageText.text = msg;
     public void ClearMessage() => messageText.text = "";
 
@@ -84,8 +97,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowTreasureUI(bool show)
     {
-        if (treasureText != null)
-            treasureText.SetActive(show);
+        treasureText?.SetActive(show);
     }
 
     public void ShowGameClear()
@@ -106,7 +118,6 @@ public class UIManager : MonoBehaviour
 
         bool isActive = pausePanel.activeSelf;
         pausePanel.SetActive(!isActive);
-
         isGameFrozen = !isActive;
     }
 }

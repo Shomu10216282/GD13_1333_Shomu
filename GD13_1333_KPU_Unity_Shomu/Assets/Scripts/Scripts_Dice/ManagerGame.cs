@@ -7,10 +7,27 @@ public class ManagerGame : MonoBehaviour
     public GameObject playerPrefab;
 
     [Header("Game Settings")]
-    public int scoreToWin = 5;
+    public int scoreToWin = 20;
+    public int initialHP = 5;
+
+    [Header("Spawn Settings")]
+    public float spawnHeightOffset = 0.1f;
+
+    private void Awake()
+    {
+        GameState.Initialize(initialHP, 0, scoreToWin, 10);
+    }
 
     private void Start()
     {
+        UIManager.Instance.SetMaxScore(scoreToWin); 
+
+        if (mapGenerator == null)
+        {
+            Debug.LogError("MapGenerator reference missing on ManagerGame!");
+            return;
+        }
+
         mapGenerator.GenerateMap();
 
         if (mapGenerator.generatedRooms == null || mapGenerator.generatedRooms.Count == 0)
@@ -29,28 +46,21 @@ public class ManagerGame : MonoBehaviour
 
     private void SpawnPlayer(Room room)
     {
-        if (room == null)
-        {
-            Debug.LogError("SpawnPlayer received a null room!");
-            return;
-        }
-
         float floorY = room.transform.position.y;
 
-        Collider[] cols = room.GetComponentsInChildren<Collider>();
-        foreach (Collider col in cols)
-        {
-            if (col.bounds.max.y > floorY)
-                floorY = col.bounds.max.y;
-        }
-
-        Vector3 spawnPos = room.transform.position + new Vector3(0f, 1f, 0f);
+        Vector3 spawnPos = new Vector3(
+            room.transform.position.x,
+            floorY + spawnHeightOffset,
+            room.transform.position.z
+        );
 
         Instantiate(playerPrefab, spawnPos, Quaternion.identity);
     }
 
     private void CheckWinCondition(int newScore)
     {
+        Debug.Log($"Score changed: {newScore}/{scoreToWin}");
+
         if (newScore >= scoreToWin)
         {
             Debug.Log("Game Cleared! You found all treasures!");

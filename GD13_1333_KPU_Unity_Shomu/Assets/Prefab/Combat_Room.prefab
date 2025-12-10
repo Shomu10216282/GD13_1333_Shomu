@@ -824,7 +824,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ce92c45cde6713b42a7f000146b8f43c, type: 2}
+  - {fileID: 2100000, guid: 2b6af0c30d404cb44a368bee3bc734f0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1040,7 +1040,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ce92c45cde6713b42a7f000146b8f43c, type: 2}
+  - {fileID: 2100000, guid: 2b6af0c30d404cb44a368bee3bc734f0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1256,7 +1256,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ce92c45cde6713b42a7f000146b8f43c, type: 2}
+  - {fileID: 2100000, guid: 2b6af0c30d404cb44a368bee3bc734f0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2053,7 +2053,7 @@ MonoBehaviour:
   westDoor: {fileID: 2429421998835898262}
   openDistance: 1
   enemyHP: 1
-  diceAudio: {fileID: 0}
+  diceClip: {fileID: 0}
   diceResultDelay: 0.1
 --- !u!65 &1108357197412485451
 BoxCollider:
@@ -2491,7 +2491,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ce92c45cde6713b42a7f000146b8f43c, type: 2}
+  - {fileID: 2100000, guid: 2b6af0c30d404cb44a368bee3bc734f0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

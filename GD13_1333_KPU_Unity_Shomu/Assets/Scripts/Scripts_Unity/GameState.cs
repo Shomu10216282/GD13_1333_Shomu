@@ -1,32 +1,42 @@
-using UnityEngine;
 using System;
+using UnityEngine;
 
 public static class GameState
 {
-    public static int HP = 5;
-    public static int Score = 0/5;
+    public static int HP { get; private set; }
+    public static int Score { get; private set; }
 
     public static event Action<int> OnScoreChanged;
     public static event Action OnGameClear;
     public static event Action OnGameOver;
 
-    private static int clearScore = 5;
+    private static int clearScore = 20;
+    private static int maxHP = 10;
 
-    public static void Initialize()
+    public static void Initialize(int initialHP, int initialScore, int winScore, int maxHp)
     {
-        HP = 10;
-        Score = 0;
+        maxHP = maxHp;
+        clearScore = winScore;
 
-        UIManager.Instance.UpdateHP(HP);
-        UIManager.Instance.UpdateScore(Score);
+        HP = Mathf.Clamp(initialHP, 0, maxHP);
+        Score = Mathf.Max(0, initialScore);
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateHP(HP);
+            UIManager.Instance.SetMaxScore(clearScore);
+            UIManager.Instance.UpdateScore(Score);
+        }
     }
 
     public static void AddScore(int amount)
     {
         Score += amount;
+        if (Score < 0) Score = 0;
+
+        UIManager.Instance?.UpdateScore(Score);
 
         OnScoreChanged?.Invoke(Score);
-        UIManager.Instance.UpdateScore(Score);
 
         if (Score >= clearScore)
         {
@@ -37,8 +47,9 @@ public static class GameState
     public static void AddHP(int amount)
     {
         HP += amount;
-        HP = Mathf.Clamp(HP, 0, 10);
-        UIManager.Instance.UpdateHP(HP);
+        HP = Mathf.Clamp(HP, 0, maxHP);
+
+        UIManager.Instance?.UpdateHP(HP);
 
         if (HP <= 0)
         {
@@ -48,6 +59,6 @@ public static class GameState
 
     public static void TakeDamage(int amount)
     {
-        AddHP(-amount);
+        AddHP(-Mathf.Abs(amount));
     }
 }
