@@ -7,20 +7,20 @@ public class ManagerGame : MonoBehaviour
     public GameObject playerPrefab;
 
     [Header("Game Settings")]
-    public int scoreToWin = 20;
-    public int initialHP = 5;
+    public int scoreToWin = 10;
+    public int initialHP = 10;
 
     [Header("Spawn Settings")]
     public float spawnHeightOffset = 0.1f;
 
     private void Awake()
     {
-        GameState.Initialize(initialHP, 0, scoreToWin, 10);
+        GameState.Initialize(initialHP, 0, scoreToWin, initialHP);
     }
 
     private void Start()
     {
-        UIManager.Instance.SetMaxScore(scoreToWin); 
+        UIManager.Instance.SetMaxScore(scoreToWin);
 
         if (mapGenerator == null)
         {
@@ -60,7 +60,6 @@ public class ManagerGame : MonoBehaviour
     private void CheckWinCondition(int newScore)
     {
         Debug.Log($"Score changed: {newScore}/{scoreToWin}");
-
         if (newScore >= scoreToWin)
         {
             Debug.Log("Game Cleared! You found all treasures!");

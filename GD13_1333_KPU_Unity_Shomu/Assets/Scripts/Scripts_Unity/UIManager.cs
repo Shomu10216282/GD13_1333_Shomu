@@ -30,7 +30,7 @@ public class UIManager : MonoBehaviour
     [HideInInspector]
     public bool isGameFrozen = false;
 
-    private int maxScore = 5;
+    private int maxScore = 10;
 
     private void Awake()
     {
@@ -45,21 +45,20 @@ public class UIManager : MonoBehaviour
 
         GameState.OnGameClear += ShowGameClear;
         GameState.OnGameOver += ShowGameOver;
+        GameState.Initialize();
     }
 
-    public void SetMaxScore(int max)
+    public void SetMaxScore(int value)
     {
-        maxScore = max;
+        maxScore = value;
         UpdateScore(GameState.Score);
     }
 
-    public void UpdateHP(int hp)
-    {
-        hpText.text = "HP: " + hp;
-    }
+    public void UpdateHP(int hp) => hpText.text = "HP: " + hp;
+
     public void UpdateScore(int score)
     {
-        scoreText.text = $"Score: {score}/{20}";
+        scoreText.text = $"Score: {score}/{10}";
     }
 
     public void ShowMessage(string msg) => messageText.text = msg;
@@ -97,7 +96,8 @@ public class UIManager : MonoBehaviour
 
     public void ShowTreasureUI(bool show)
     {
-        treasureText?.SetActive(show);
+        if (treasureText != null)
+            treasureText.SetActive(show);
     }
 
     public void ShowGameClear()
@@ -118,6 +118,7 @@ public class UIManager : MonoBehaviour
 
         bool isActive = pausePanel.activeSelf;
         pausePanel.SetActive(!isActive);
+
         isGameFrozen = !isActive;
     }
 }

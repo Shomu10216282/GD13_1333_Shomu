@@ -6,7 +6,7 @@ public class TreasureRoom : Room
     private bool taken = false;
 
     [Header("Treasure Settings")]
-    public int treasureValue = 1;
+    public int treasureValue = 2;
 
     protected override void Start()
     {
