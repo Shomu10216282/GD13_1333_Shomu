@@ -1,12 +1,5 @@
-﻿using GD13_1333_Shomu.Scripts;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using static UnityEditor.Progress;
-
 
 namespace GD13_1333_Shomu.Scripts
 {

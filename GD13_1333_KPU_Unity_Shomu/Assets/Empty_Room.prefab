@@ -3458,6 +3458,11 @@ MonoBehaviour:
   west: {fileID: 0}
   gridPosition: {x: 0, y: 0}
   roomType: 0
+<<<<<<< Updated upstream:GD13_1333_KPU_Unity_Shomu/Assets/Empty_Room.prefab
+=======
+  roomName: Base Room
+  directionArrow: {fileID: 0}
+>>>>>>> Stashed changes:GD13_1333_KPU_Unity_Shomu/Assets/Prefab/Empty_Room.prefab
 --- !u!1 &9038917287546934121
 GameObject:
   m_ObjectHideFlags: 0

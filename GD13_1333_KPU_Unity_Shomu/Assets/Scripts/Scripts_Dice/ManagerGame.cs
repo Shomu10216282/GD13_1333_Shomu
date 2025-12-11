@@ -1,29 +1,73 @@
-using GD13_1333_Shomu.Scripts;
 using UnityEngine;
-using static GD13_1333_Shomu.Scripts.Player;
 
 public class ManagerGame : MonoBehaviour
 {
-    private Player human;
+    [Header("References")]
+    public MapGenerator mapGenerator;
+    public GameObject playerPrefab;
 
-    private DieRoller dieRoller = new DieRoller();
-    private System.Random random = new System.Random();
+    [Header("Game Settings")]
+    public int scoreToWin = 10;
+    public int initialHP = 10;
 
-    private Map gameMap;
-    public void Start()
+    [Header("Spawn Settings")]
+    public float spawnHeightOffset = 0.1f;
+
+    private void Awake()
     {
-        Debug.Log("GameManager Start");
-        gameMap = new Map();
-        Debug.Log("GameManager Map Created");
-
+        GameState.Initialize(initialHP, 0, scoreToWin, initialHP);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
-
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        UIManager.Instance.SetMaxScore(scoreToWin);
+
+        if (mapGenerator == null)
+        {
+            Debug.LogError("MapGenerator reference missing on ManagerGame!");
+            return;
+        }
+
+        mapGenerator.GenerateMap();
+
+        if (mapGenerator.generatedRooms == null || mapGenerator.generatedRooms.Count == 0)
+        {
+            Debug.LogError("No rooms generated! Check MapGenerator settings.");
+            return;
+        }
+
+        Room randomRoom = mapGenerator.generatedRooms[
+            Random.Range(0, mapGenerator.generatedRooms.Count)];
+
+        SpawnPlayer(randomRoom);
+
+        GameState.OnScoreChanged += CheckWinCondition;
+    }
+
+    private void SpawnPlayer(Room room)
+    {
+        float floorY = room.transform.position.y;
+
+        Vector3 spawnPos = new Vector3(
+            room.transform.position.x,
+            floorY + spawnHeightOffset,
+            room.transform.position.z
+        );
+
+        Instantiate(playerPrefab, spawnPos, Quaternion.identity);
+    }
+
+    private void CheckWinCondition(int newScore)
+    {
+        Debug.Log($"Score changed: {newScore}/{scoreToWin}");
+        if (newScore >= scoreToWin)
+        {
+            Debug.Log("Game Cleared! You found all treasures!");
+        }
+    }
+
+    private void OnDestroy()
+    {
+        GameState.OnScoreChanged -= CheckWinCondition;
     }
 }

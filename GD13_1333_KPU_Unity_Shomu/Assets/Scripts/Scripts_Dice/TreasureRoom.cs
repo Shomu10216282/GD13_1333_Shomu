@@ -1,7 +1,4 @@
 using System;
-using UnityEngine;
-using static UnityEditor.Progress;
-
 
 namespace GD13_1333_Shomu.Scripts
 {
